@@ -4,17 +4,14 @@ public class Square {
     
     protected double xCoord;
     protected double yCoord;
-    protected int size;
+    protected int xSize;
+    protected int ySize;
     
-    public Square(double xCoord, double yCoord , int size) {
+    public Square(double xCoord, double yCoord , int xSize, int ySize) {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
-        this.size = size;
-    }
-    
-    public void generateCoords() {
-        this.xCoord = (int) (Math.random()*490);
-        this.yCoord = (int) (Math.random()*490);
+        this.xSize = xSize;
+        this.ySize = ySize;
     }
     
     public double getXCoord() {
@@ -25,7 +22,11 @@ public class Square {
         return yCoord;
     }
     
-    public int getSize() {
-        return this.size;
+    public int getXSize() {
+        return this.xSize;
+    }
+    
+    public int getYSize() {
+        return this.ySize;
     }
 }
