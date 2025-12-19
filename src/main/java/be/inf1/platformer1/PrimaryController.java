@@ -22,9 +22,17 @@ public class PrimaryController extends TimerTask{
     @FXML
     private AnchorPane rootView;
     
-    private Square square;
+    private Speler speler;
+    private final int boardSizeX = 700;
+    private final int boardSizeY = 700;
     
+    public int getBoardSizeX() {
+        return this.boardSizeX;
+    }
     
+    public int getBoardSizeY() {
+        return this.boardSizeY;
+    }
 
     @FXML
     void initialize() {
@@ -32,7 +40,7 @@ public class PrimaryController extends TimerTask{
         Platform.runLater(() -> rootView.requestFocus());
         rootView.setOnKeyPressed(this::handleKeyPress);
         rootView.setOnKeyPressed(this::handleKeyPress);
-        square = new Square(50,50);
+        speler = new Speler(50,50,10,boardSizeX,boardSizeY);
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(this, 0, 32);
         updateView();
@@ -42,31 +50,31 @@ public class PrimaryController extends TimerTask{
     void handleKeyPress(KeyEvent e) {
         switch(e.getCode()) {
             case Z:
-                square.jump(5);
+                speler.jump(5);
                 break;
             case Q:
-                square.move(-10);
+                speler.move(-10);
                 break;
             case D:
-                square.move(10);
+                speler.move(10);
                 break;
         }
     }
     
 public void updateView() {
         rootView.getChildren().clear();
-        Rectangle backrgroundView = new Rectangle(0,0,500,500);
+        Rectangle backrgroundView = new Rectangle(0,0,boardSizeX,boardSizeY);
         backrgroundView.setFill(Color.RED);
         rootView.getChildren().add(backrgroundView);
         
-        Rectangle squareView = new Rectangle(square.getXCoord(),square.getYCoord(),50,50);
+        Rectangle squareView = new Rectangle(speler.getXCoord(),speler.getYCoord(),speler.getSize(),speler.getSize());
         squareView.setFill(Color.BLUE);
         rootView.getChildren().add(squareView);
     }
 
     @Override
     public void run() {
-        square.updateCoords();
+        speler.updateCoords();
         Platform.runLater(this::updateView);
     }
 

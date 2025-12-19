@@ -2,21 +2,14 @@ package be.inf1.platformer1;
 
 public class Square {
     
-    private int xCoord;
-    private double yCoord;
-    private int size;
-    private double speed;
-    private double acceleration;
+    protected double xCoord;
+    protected double yCoord;
+    protected int size;
     
-    public Square(int xCoord, double yCoord) {
+    public Square(double xCoord, double yCoord , int size) {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
-        this.speed = 0;
-        this.acceleration = 0.1;
-    }
-    
-    public void verhoogSpeed(int speed) {
-        this.speed += speed;
+        this.size = size;
     }
     
     public void generateCoords() {
@@ -24,7 +17,7 @@ public class Square {
         this.yCoord = (int) (Math.random()*490);
     }
     
-    public int getXCoord() {
+    public double getXCoord() {
         return xCoord;
     }
     
@@ -32,25 +25,7 @@ public class Square {
         return yCoord;
     }
     
-    
-    
-    public void updateCoords() {
-        speed += acceleration;
-        
-        yCoord += speed;
-        if (yCoord > 450) {
-            speed = 0;
-            yCoord = 450;
-        }
-    }
-    
-    public void jump(double jumpSpeed) {
-    if (yCoord >= 450) {
-        speed = -jumpSpeed;
-    }
-}
-
-    void move(int i) {
-        this.xCoord += i;
+    public int getSize() {
+        return this.size;
     }
 }
