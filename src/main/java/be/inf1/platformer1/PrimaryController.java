@@ -23,17 +23,19 @@ public class PrimaryController extends TimerTask{
     private AnchorPane rootView;
     
     private Speler speler;
-    private final int boardSizeX = 700;
-    private final int boardSizeY = 700;
+    private final int boardSizeX = 1700;
+    private final int boardSizeY = 1000;
     
     public int getBoardSizeX() {
         return this.boardSizeX;
     }
     
+    
     public int getBoardSizeY() {
         return this.boardSizeY;
     }
 
+    
     @FXML
     void initialize() {
         rootView.setFocusTraversable(true);
