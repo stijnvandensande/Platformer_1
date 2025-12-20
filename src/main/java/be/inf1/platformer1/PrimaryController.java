@@ -25,6 +25,11 @@ public class PrimaryController extends TimerTask{
     private Speler speler;
     private final int boardSizeX = 1700;
     private final int boardSizeY = 1000;
+    private final int jumpStrength = 5;
+    private final double baseSpeed = 0.5;
+    private double speedMultiplier= 1;
+    private double movementSpeed = baseSpeed * speedMultiplier;
+        private Level level;
     
     public int getBoardSizeX() {
         return this.boardSizeX;
@@ -38,6 +43,7 @@ public class PrimaryController extends TimerTask{
     
     @FXML
     void initialize() {
+        level = new Level();
         rootView.setFocusTraversable(true);
         Platform.runLater(() -> rootView.requestFocus());
         rootView.setOnKeyPressed(this::handleKeyPress);
@@ -52,26 +58,40 @@ public class PrimaryController extends TimerTask{
     void handleKeyPress(KeyEvent e) {
         switch(e.getCode()) {
             case SPACE:
-                speler.jump(5);
+                speler.jump(jumpStrength);
                 break;
             case Q:
-                speler.move(-0.5);
+                speler.move(-movementSpeed);
                 break;
             case D:
-                speler.move(0.5);
+                speler.move(movementSpeed);
                 break;
         }
     }
     
 public void updateView() {
-        rootView.getChildren().clear();
-        Rectangle backrgroundView = new Rectangle(0,0,boardSizeX,boardSizeY);
-        backrgroundView.setFill(Color.GRAY); //Is iets aangenamer dan ROOD
-        rootView.getChildren().add(backrgroundView);
+    rootView.getChildren().clear();
+
+    //achtergrond
+    Rectangle backgroundView = new Rectangle(0,0,boardSizeX,boardSizeY);
+    backgroundView.setFill(Color.GRAY); //Is iets aangenamer dan ROOD
+    rootView.getChildren().add(backgroundView);
+    
+    
+    //Level bouwen
+    for (Block b : level.getBlocks()) {
+        Rectangle r = new Rectangle(b.getXCoord(), b.getYCoord(), b.getXSize(), b.getYSize());
         
-        Rectangle squareView = new Rectangle(speler.getXCoord(),speler.getYCoord(),speler.getXSize(),speler.getYSize());
-        squareView.setFill(Color.BLUE);
-        rootView.getChildren().add(squareView);
+        if (b.getBlockID() == 1) r.setFill(Color.DARKGRAY);
+        if (b.getBlockID() == 2) r.setFill(Color.RED);
+        
+        rootView.getChildren().add(r);
+    }
+        
+    Rectangle squareView = new Rectangle(speler.getXCoord(),speler.getYCoord(),speler.getXSize(),speler.getYSize());
+    squareView.setFill(Color.BLUE);
+    rootView.getChildren().add(squareView);
+    
     }
 
     @Override
