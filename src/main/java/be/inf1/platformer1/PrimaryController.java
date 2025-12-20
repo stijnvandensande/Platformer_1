@@ -64,7 +64,7 @@ public class PrimaryController extends TimerTask{
 public void updateView() {
         rootView.getChildren().clear();
         Rectangle backrgroundView = new Rectangle(0,0,boardSizeX,boardSizeY);
-        backrgroundView.setFill(Color.RED);
+        backrgroundView.setFill(Color.GRAY); //Is iets aangenamer dan ROOD
         rootView.getChildren().add(backrgroundView);
         
         Rectangle squareView = new Rectangle(speler.getXCoord(),speler.getYCoord(),speler.getXSize(),speler.getYSize());
