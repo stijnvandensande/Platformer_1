@@ -29,12 +29,11 @@ public class PrimaryController extends TimerTask{
     private final double baseSpeed = 0.5;
     private double speedMultiplier= 1;
     private double movementSpeed = baseSpeed * speedMultiplier;
-        private Level level;
+    private Level level;
     
     public int getBoardSizeX() {
         return this.boardSizeX;
     }
-    
     
     public int getBoardSizeY() {
         return this.boardSizeY;
@@ -43,10 +42,9 @@ public class PrimaryController extends TimerTask{
     
     @FXML
     void initialize() {
-        level = new Level();
+        level = new Level(boardSizeX,boardSizeY);
         rootView.setFocusTraversable(true);
         Platform.runLater(() -> rootView.requestFocus());
-        rootView.setOnKeyPressed(this::handleKeyPress);
         rootView.setOnKeyPressed(this::handleKeyPress);
         speler = new Speler(50,50,10,10,boardSizeX,boardSizeY);
         Timer timer = new Timer();
@@ -82,8 +80,12 @@ public void updateView() {
     for (Block b : level.getBlocks()) {
         Rectangle r = new Rectangle(b.getXCoord(), b.getYCoord(), b.getXSize(), b.getYSize());
         
-        if (b.getBlockID() == 1) r.setFill(Color.DARKGRAY);
-        if (b.getBlockID() == 2) r.setFill(Color.RED);
+        if (b.getBlockID() == 1) r.setFill(Color.DARKGRAY);             //Blocks
+        if (b.getBlockID() == 2) r.setFill(Color.RED);                  //Spikes
+        if (b.getBlockID() == 3) r.setFill(Color.web("#fa6400"));       //Lava
+        if (b.getBlockID() == 4) r.setFill(Color.web("#8aefff"));       //Glass
+        
+        
         
         rootView.getChildren().add(r);
     }

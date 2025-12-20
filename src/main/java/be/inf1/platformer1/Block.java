@@ -1,6 +1,6 @@
 package be.inf1.platformer1;
 
-public class Block extends Square{
+public class Block extends Square{  //is de basis
     
     
     protected int blockID;
