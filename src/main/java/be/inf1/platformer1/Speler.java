@@ -8,6 +8,8 @@ public class Speler extends Square {
     private int maxX;
     private int maxY;
     private boolean onGround;
+    private boolean onLeftWall;
+    private boolean onRightWall;
     
     
     
@@ -20,18 +22,30 @@ public class Speler extends Square {
         this.acceleration = 0.3;
         this.friction = 0.2;
         this.onGround = false;
+        this.onLeftWall = false;
+        this.onRightWall = false;
+    }
+    
+    public boolean isOnGround() {
+    return onGround;
     }
     
     
-    public void updateCoords() {
+    public void updateCoords(Level level, Speler speler) {
         ySpeed += acceleration;
         yCoord += ySpeed;
         xCoord += xSpeed;
         // vertraging door wrijving
         if (xSpeed > 0) {
             xSpeed -= friction;
-        } if (xSpeed < 0) {
-            xSpeed += friction;
+        if (xSpeed < 0) {
+            xSpeed = 0;
+        }
+        } else if (xSpeed < 0) {
+        xSpeed += friction;
+        if (xSpeed > 0) {
+            xSpeed = 0;
+        }
         }
         // check collition vloer
         if (yCoord >= (maxY-this.ySize)) {
@@ -43,16 +57,25 @@ public class Speler extends Square {
         }
         
         // check collition rechtermuur
-        if ((xCoord > (maxX-this.xSize))) {
+        if ((xCoord >= (maxX-this.xSize))) {
             xSpeed = 0;
             xCoord = maxX-this.xSize;
+            onRightWall = true;
+        } else {
+            onRightWall = false;
         }
         // check collition linkermuur
-        if (xCoord < 0) {
+        if (xCoord <= 0) {
             xSpeed = 0;
             xCoord = 0;
+            onLeftWall = true;
+        } else {
+            onLeftWall = false;
         }
         
+        for (Block b : level.getBlocks()) {
+        speler.Collision(b);
+        }
     }
     
     
@@ -63,16 +86,26 @@ public class Speler extends Square {
         ySpeed = -jumpSpeed;
     }
     }
+    
+    public void wallJump(double jumpSpeed) {
+        if (this.onRightWall) {
+            ySpeed = -jumpSpeed;
+            xSpeed = -(jumpSpeed/2);
+        } else if (this.onLeftWall) {
+            ySpeed = -jumpSpeed;
+            xSpeed = (jumpSpeed/2);
+        }
+    }
 
     public void move(double i) {
         xSpeed += i;
     }
     
     public boolean checkCollision(Square other){
-        if (this.xCoord < other.getXCoord() + other.getXSize() &&
-           this.xCoord + this.xSize > other.getXCoord() &&
-           this.yCoord < other.getYCoord() + other.getYSize() &&
-           this.yCoord + this.ySize > other.getYCoord()){
+        if (this.xCoord <= other.getXCoord() + other.getXSize() &&
+           this.xCoord + this.xSize >= other.getXCoord() &&
+           this.yCoord <= other.getYCoord() + other.getYSize() &&
+           this.yCoord + this.ySize >= other.getYCoord()){
             System.out.println("Is Touching");
             return true;
         } else{
@@ -82,42 +115,31 @@ public class Speler extends Square {
     public void Collision(Square other) {
     // check of ze elkaar raken
     if (checkCollision(other)) {
-    // hoever de speler zijn rechterkant in de blokje zit
-    // deze waarde zal klein zijn als de speler van links komt, maar heel groot als de speler van rechts komt
-    double overlapLeft   = (this.xCoord + this.xSize) - other.getXCoord();
-    // hoever de speler zijn linkerkant in het blokje zit
-    double overlapRight  = (other.getXCoord() + other.getXSize()) - this.xCoord;
-    // hoever de speler zijn onderkant in het blokje zit
-    double overlapTop    = (this.yCoord + this.ySize) - other.getYCoord();
-    // hoever de speler zijn  bovenkant in het blokje zit
-    double overlapBottom = (other.getYCoord() + other.getYSize()) - this.yCoord;
-    // kijk welke overlap het minst is sinds dat betekend dat het aan die kant raakt
-    double minOverlap = Math.min(
-        Math.min(overlapLeft, overlapRight),
-        Math.min(overlapTop, overlapBottom)
-    );
-
-    // Bovenkant collision 
-    if (minOverlap == overlapTop) {
-        this.yCoord = other.getYCoord() - this.ySize;
-        this.ySpeed = 0;
-        this.onGround = true;
-    }
-    // onderkant collision
-    else if (minOverlap == overlapBottom) {
-        this.yCoord = other.getYCoord() + other.getYSize();
-        this.ySpeed = 0;
-    }
-    // links collision
-    else if (minOverlap == overlapLeft) {
-        this.xCoord = other.getXCoord() - this.xSize;
-        this.xSpeed = 0;
-    }
-    // rechts collision
-    else if (minOverlap == overlapRight) {
-        this.xCoord = other.getXCoord() + other.getXSize();
-        this.xSpeed = 0;
-    }
+        double overlapX = Math.min(this.xCoord + this.xSize, other.getXCoord() + other.getXSize())
+                - Math.max(this.xCoord, other.getXCoord());
+        double overlapY = Math.min(this.yCoord + this.ySize, other.getYCoord() + other.getYSize())
+                - Math.max(this.yCoord, other.getYCoord());
+        if (overlapY < overlapX) {
+        if (this.ySpeed > 0) { // falling
+            this.yCoord = other.getYCoord() - this.ySize;
+            this.ySpeed = 0;
+            this.onGround = true;
+        } else if (this.ySpeed < 0) { // jumping up
+            this.yCoord = other.getYCoord() + other.getYSize();
+            this.ySpeed = 0;
+        }
+        } else { // left/right
+            if (this.xCoord < other.getXCoord()) { // hit left side
+                this.xCoord = other.getXCoord() - this.xSize;
+                this.xSpeed = 0;
+                this.onRightWall = true;
+            } else { // hit right side
+                this.xCoord = other.getXCoord() + other.getXSize();
+                this.xSpeed = 0;
+            this.onLeftWall = true;
+        }
+        }
     }
     }
 }
+

@@ -30,6 +30,7 @@ public class Level {
         blocks.add(new Block(100, boardHeight-50, 100, 10, 1));
         blocks.add(new Block(250, boardHeight-150, 100, 10, 1));
         blocks.add(new Block(400, 300, 100, 10, 1));
+        blocks.add(new Block(600,boardHeight-500,20,480,1));
 
         // Spikes tesy
         blocks.add(new Block(300, 0, 50, 10, 2));

@@ -23,7 +23,7 @@ public class PrimaryController extends TimerTask{
     private AnchorPane rootView;
     
     private Speler speler;
-    private final int boardSizeX = 1700;
+    private final int boardSizeX = 1200;
     private final int boardSizeY = 800;
     private final int jumpStrength = 10;
     private final double baseSpeed = 1;
@@ -56,7 +56,11 @@ public class PrimaryController extends TimerTask{
     void handleKeyPress(KeyEvent e) {
         switch(e.getCode()) {
             case SPACE:
+                if (speler.isOnGround()) {
                 speler.jump(jumpStrength);
+                } else {
+                speler.wallJump(jumpStrength); // only works if touching wall
+                }
                 break;
             case Q:
                 speler.move(-movementSpeed);
@@ -66,7 +70,7 @@ public class PrimaryController extends TimerTask{
                 break;
         }
     }
-    
+ 
 public void updateView() {
     rootView.getChildren().clear();
 
@@ -98,7 +102,7 @@ public void updateView() {
 
     @Override
     public void run() {
-    speler.updateCoords();
+    speler.updateCoords(level, speler);
 
     for (Block b : level.getBlocks()) {
         speler.Collision(b);
