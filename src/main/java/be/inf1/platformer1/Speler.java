@@ -62,9 +62,10 @@ public class Speler extends Square {
     if (this.onGround) {
         ySpeed = -jumpSpeed;
     }
+    }
 
-    void move(double i) {
-        this.xSpeed += i;
+    public void move(double i) {
+        xSpeed += i;
     }
     
     public boolean checkCollision(Square other){

@@ -24,9 +24,9 @@ public class PrimaryController extends TimerTask{
     
     private Speler speler;
     private final int boardSizeX = 1700;
-    private final int boardSizeY = 1000;
-    private final int jumpStrength = 5;
-    private final double baseSpeed = 0.5;
+    private final int boardSizeY = 800;
+    private final int jumpStrength = 10;
+    private final double baseSpeed = 1;
     private double speedMultiplier= 1;
     private double movementSpeed = baseSpeed * speedMultiplier;
     private Level level;
@@ -98,9 +98,13 @@ public void updateView() {
 
     @Override
     public void run() {
-        speler.updateCoords();
-        speler.Collision(square);
-        Platform.runLater(this::updateView);
+    speler.updateCoords();
+
+    for (Block b : level.getBlocks()) {
+        speler.Collision(b);
+    }
+
+    Platform.runLater(this::updateView);
     }
 
 
