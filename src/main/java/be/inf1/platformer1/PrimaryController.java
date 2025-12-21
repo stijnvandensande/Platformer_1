@@ -23,6 +23,7 @@ public class PrimaryController extends TimerTask{
     private AnchorPane rootView;
     
     private Speler speler;
+    private Square square = new Square(200,650,30,30);
     private final int boardSizeX = 700;
     private final int boardSizeY = 700;
     
@@ -50,13 +51,13 @@ public class PrimaryController extends TimerTask{
     void handleKeyPress(KeyEvent e) {
         switch(e.getCode()) {
             case SPACE:
-                speler.jump(5);
+                speler.jump(10);
                 break;
             case Q:
-                speler.move(-0.5);
+                speler.move(-1);
                 break;
             case D:
-                speler.move(0.5);
+                speler.move(1);
                 break;
         }
     }
@@ -67,14 +68,19 @@ public void updateView() {
         backrgroundView.setFill(Color.RED);
         rootView.getChildren().add(backrgroundView);
         
-        Rectangle squareView = new Rectangle(speler.getXCoord(),speler.getYCoord(),speler.getXSize(),speler.getYSize());
-        squareView.setFill(Color.BLUE);
+        Rectangle spelerView = new Rectangle(speler.getXCoord(),speler.getYCoord(),speler.getXSize(),speler.getYSize());
+        spelerView.setFill(Color.BLUE);
+        rootView.getChildren().add(spelerView);
+        
+        Rectangle squareView = new Rectangle(square.getXCoord(),square.getYCoord(),square.getXSize(),square.getYSize());
+        squareView.setFill(Color.PURPLE);
         rootView.getChildren().add(squareView);
     }
 
     @Override
     public void run() {
         speler.updateCoords();
+        speler.Collision(square);
         Platform.runLater(this::updateView);
     }
 
