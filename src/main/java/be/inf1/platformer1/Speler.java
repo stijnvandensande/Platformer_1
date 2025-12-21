@@ -3,11 +3,13 @@ package be.inf1.platformer1;
 public class Speler extends Square {
     private double xSpeed;
     private double ySpeed;
-    private double acceleration;
+    private final double acceleration;
     private double friction;
     private int maxX;
     private int maxY;
     private boolean onGround;
+    
+    
     
     public Speler(double xCoord, double yCoord, int xSize, int ySize,int maxX, int maxY) {
         super(xCoord, yCoord, xSize ,ySize);
@@ -19,6 +21,8 @@ public class Speler extends Square {
         this.friction = 0.2;
         this.onGround = false;
     }
+    
+    
     public void updateCoords() {
         ySpeed += acceleration;
         yCoord += ySpeed;
@@ -51,11 +55,13 @@ public class Speler extends Square {
         
     }
     
+    
+    
+    
     public void jump(double jumpSpeed) {
     if (this.onGround) {
         ySpeed = -jumpSpeed;
     }
-}
 
     void move(double i) {
         this.xSpeed += i;

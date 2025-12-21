@@ -23,9 +23,13 @@ public class PrimaryController extends TimerTask{
     private AnchorPane rootView;
     
     private Speler speler;
-    private Square square = new Square(200,650,30,30);
-    private final int boardSizeX = 700;
-    private final int boardSizeY = 700;
+    private final int boardSizeX = 1700;
+    private final int boardSizeY = 1000;
+    private final int jumpStrength = 5;
+    private final double baseSpeed = 0.5;
+    private double speedMultiplier= 1;
+    private double movementSpeed = baseSpeed * speedMultiplier;
+    private Level level;
     
     public int getBoardSizeX() {
         return this.boardSizeX;
@@ -35,11 +39,12 @@ public class PrimaryController extends TimerTask{
         return this.boardSizeY;
     }
 
+    
     @FXML
     void initialize() {
+        level = new Level(boardSizeX,boardSizeY);
         rootView.setFocusTraversable(true);
         Platform.runLater(() -> rootView.requestFocus());
-        rootView.setOnKeyPressed(this::handleKeyPress);
         rootView.setOnKeyPressed(this::handleKeyPress);
         speler = new Speler(50,50,10,10,boardSizeX,boardSizeY);
         Timer timer = new Timer();
@@ -51,30 +56,44 @@ public class PrimaryController extends TimerTask{
     void handleKeyPress(KeyEvent e) {
         switch(e.getCode()) {
             case SPACE:
-                speler.jump(10);
+                speler.jump(jumpStrength);
                 break;
             case Q:
-                speler.move(-1);
+                speler.move(-movementSpeed);
                 break;
             case D:
-                speler.move(1);
+                speler.move(movementSpeed);
                 break;
         }
     }
     
 public void updateView() {
-        rootView.getChildren().clear();
-        Rectangle backrgroundView = new Rectangle(0,0,boardSizeX,boardSizeY);
-        backrgroundView.setFill(Color.RED);
-        rootView.getChildren().add(backrgroundView);
+    rootView.getChildren().clear();
+
+    //achtergrond
+    Rectangle backgroundView = new Rectangle(0,0,boardSizeX,boardSizeY);
+    backgroundView.setFill(Color.GRAY); //Is iets aangenamer dan ROOD
+    rootView.getChildren().add(backgroundView);
+    
+    
+    //Level bouwen
+    for (Block b : level.getBlocks()) {
+        Rectangle r = new Rectangle(b.getXCoord(), b.getYCoord(), b.getXSize(), b.getYSize());
         
-        Rectangle spelerView = new Rectangle(speler.getXCoord(),speler.getYCoord(),speler.getXSize(),speler.getYSize());
-        spelerView.setFill(Color.BLUE);
-        rootView.getChildren().add(spelerView);
+        if (b.getBlockID() == 1) r.setFill(Color.DARKGRAY);             //Blocks
+        if (b.getBlockID() == 2) r.setFill(Color.RED);                  //Spikes
+        if (b.getBlockID() == 3) r.setFill(Color.web("#fa6400"));       //Lava
+        if (b.getBlockID() == 4) r.setFill(Color.web("#8aefff"));       //Glass
         
-        Rectangle squareView = new Rectangle(square.getXCoord(),square.getYCoord(),square.getXSize(),square.getYSize());
-        squareView.setFill(Color.PURPLE);
-        rootView.getChildren().add(squareView);
+        
+        
+        rootView.getChildren().add(r);
+    }
+        
+    Rectangle squareView = new Rectangle(speler.getXCoord(),speler.getYCoord(),speler.getXSize(),speler.getYSize());
+    squareView.setFill(Color.BLUE);
+    rootView.getChildren().add(squareView);
+    
     }
 
     @Override
