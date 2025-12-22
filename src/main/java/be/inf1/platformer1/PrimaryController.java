@@ -38,6 +38,8 @@ public class PrimaryController extends TimerTask{
     public int getBoardSizeY() {
         return this.boardSizeY;
     }
+    
+
 
     
     @FXML
@@ -70,10 +72,26 @@ public class PrimaryController extends TimerTask{
                 break;
         }
     }
- 
+    
+    
+    public void respawnPlayer(){
+        speler.setXCoord(level.getRespawnX());
+        speler.setYCoord(level.getRespawnY());
+        speler.revive();
+    }
+      
+    
+    
+    
 public void updateView() {
     rootView.getChildren().clear();
-
+    
+    //check of player leeft
+    if(speler.IsDead()){
+        respawnPlayer();
+        speler.revive();
+    }
+    
     //achtergrond
     Rectangle backgroundView = new Rectangle(0,0,boardSizeX,boardSizeY);
     backgroundView.setFill(Color.GRAY); //Is iets aangenamer dan ROOD
@@ -85,9 +103,11 @@ public void updateView() {
         Rectangle r = new Rectangle(b.getXCoord(), b.getYCoord(), b.getXSize(), b.getYSize());
         
         if (b.getBlockID() == 1) r.setFill(Color.DARKGRAY);             //Blocks
-        if (b.getBlockID() == 2) r.setFill(Color.RED);                  //Spikes
+        if (b.getBlockID() == 99) r.setFill(Color.RED);                  //Spikes
         if (b.getBlockID() == 3) r.setFill(Color.web("#fa6400"));       //Lava
         if (b.getBlockID() == 4) r.setFill(Color.web("#8aefff"));       //Glass
+        //if (b.getBlockID() == 5) r.setFill(Color.web("#8aefff"));       //Teleport
+        
         
         
         

@@ -10,6 +10,7 @@ public class Speler extends Square {
     private boolean onGround;
     private boolean onLeftWall;
     private boolean onRightWall;
+    private boolean isDead;
     
     
     
@@ -27,8 +28,45 @@ public class Speler extends Square {
     }
     
     public boolean isOnGround() {
-    return onGround;
+        return onGround;
     }
+    
+    
+    public boolean IsDead(){
+        return isDead;
+    }
+    
+    
+    public void kill(){ //Kill player
+        isDead = true;
+    }
+    
+    public void revive(){ //revive player
+        isDead = false;
+    }
+    
+    
+    
+    
+    //Respawn Setters
+    public void setXCoord(double x){
+        this.xCoord = x;
+    }
+    
+    public void setYCoord(double y){
+        this.yCoord = y;
+    }
+    
+    public void resetSpeed(){
+        xSpeed=0;
+        ySpeed=0;
+        onGround= false;
+        onLeftWall= false;
+        onRightWall=false;
+    }
+    
+    
+    
     
     
     public void updateCoords(Level level, Speler speler) {
@@ -82,9 +120,9 @@ public class Speler extends Square {
     
     
     public void jump(double jumpSpeed) {
-    if (this.onGround) {
-        ySpeed = -jumpSpeed;
-    }
+        if (this.onGround) {
+            ySpeed = -jumpSpeed;
+        }
     }
     
     public void wallJump(double jumpSpeed) {
@@ -115,6 +153,12 @@ public class Speler extends Square {
     public void Collision(Square other) {
     // check of ze elkaar raken
     if (checkCollision(other)) {
+        
+        
+        if (other instanceof Block && ((Block) other).getBlockID() < 75) { // alle dodelijke block hebben een ID hoger dan deze waarde anders zou je moeten maken dat je 1, 2, 3, 4 allemaal moet cheken of ze dodenlijk zijn
+        kill();// Also dat is met casting en behulp van chatGPT MAGIC
+        return;
+        }
         double overlapX = Math.min(this.xCoord + this.xSize, other.getXCoord() + other.getXSize())
                 - Math.max(this.xCoord, other.getXCoord());
         double overlapY = Math.min(this.yCoord + this.ySize, other.getYCoord() + other.getYSize())
@@ -137,7 +181,7 @@ public class Speler extends Square {
                 this.xCoord = other.getXCoord() + other.getXSize();
                 this.xSpeed = 0;
             this.onLeftWall = true;
-        }
+            }
         }
     }
     }
