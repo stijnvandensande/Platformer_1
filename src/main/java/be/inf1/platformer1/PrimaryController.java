@@ -29,7 +29,9 @@ public class PrimaryController extends TimerTask{
     private final double baseSpeed = 1;
     private double speedMultiplier= 1;
     private double movementSpeed = baseSpeed * speedMultiplier;
-    private Level level;
+    private Level currentLevel;
+    private Level level1;
+    private Level level2;
     
     public int getBoardSizeX() {
         return this.boardSizeX;
@@ -44,13 +46,15 @@ public class PrimaryController extends TimerTask{
     
     @FXML
     void initialize() {
-        level = new Level(boardSizeX,boardSizeY);
+        level1 = new Level(boardSizeX,boardSizeY,1);
+        level2 = new Level(boardSizeX,boardSizeY,2);
+        currentLevel = level1;
         rootView.setFocusTraversable(true);
         Platform.runLater(() -> rootView.requestFocus());
         rootView.setOnKeyPressed(this::handleKeyPress);
         speler = new Speler(50,50,10,10,boardSizeX,boardSizeY);
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(this, 0, 32);
+        timer.scheduleAtFixedRate(this, 0, 1000/60);
         updateView();
     }
 
@@ -74,11 +78,7 @@ public class PrimaryController extends TimerTask{
     }
     
     
-    public void respawnPlayer(){
-        speler.setXCoord(level.getRespawnX());
-        speler.setYCoord(level.getRespawnY());
-        speler.revive();
-    }
+
       
     
     
@@ -88,7 +88,7 @@ public void updateView() {
     
     //check of player leeft
     if(speler.IsDead()){
-        respawnPlayer();
+        speler.respawnPlayer(level1);
         speler.revive();
     }
     
@@ -99,7 +99,7 @@ public void updateView() {
     
     
     //Level bouwen
-    for (Block b : level.getBlocks()) {
+    for (Block b : currentLevel.getBlocks()) {
         Rectangle r = new Rectangle(b.getXCoord(), b.getYCoord(), b.getXSize(), b.getYSize());
         
         if (b.getBlockID() == 1) r.setFill(Color.DARKGRAY);             //Blocks
@@ -122,10 +122,9 @@ public void updateView() {
 
     @Override
     public void run() {
-    speler.updateCoords(level, speler);
-
-    for (Block b : level.getBlocks()) {
-        speler.Collision(b);
+    speler.updateCoords(currentLevel, speler);
+    if (speler.getReachedExit()) {
+        currentLevel = level2;
     }
 
     Platform.runLater(this::updateView);

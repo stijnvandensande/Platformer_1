@@ -1,7 +1,7 @@
 package be.inf1.platformer1;
 
 /*
-public class BlockSpikes extends Square { //als je aanraakt ben je dood
+public class BlockSpikes extends Square {
     
     protected int blockID = 2;
 

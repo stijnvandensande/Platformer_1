@@ -3,7 +3,7 @@ package be.inf1.platformer1;
 public class Speler extends Square {
     private double xSpeed;
     private double ySpeed;
-    private final double acceleration;
+    private final double gravity;
     private double friction;
     private int maxX;
     private int maxY;
@@ -11,7 +11,7 @@ public class Speler extends Square {
     private boolean onLeftWall;
     private boolean onRightWall;
     private boolean isDead;
-    
+    private boolean reachedExit;
     
     
     public Speler(double xCoord, double yCoord, int xSize, int ySize,int maxX, int maxY) {
@@ -20,11 +20,12 @@ public class Speler extends Square {
         this.maxY = maxY;
         this.xSpeed = 0;
         this.ySpeed = 0;
-        this.acceleration = 0.3;
-        this.friction = 0.2;
+        this.gravity = 0.15;
+        this.friction = 0.1;
         this.onGround = false;
         this.onLeftWall = false;
         this.onRightWall = false;
+        this.reachedExit = false;
     }
     
     public boolean isOnGround() {
@@ -45,8 +46,13 @@ public class Speler extends Square {
         isDead = false;
     }
     
+    public void nextLevel() {
+        reachedExit = true;
+    }
     
-    
+    public boolean getReachedExit() {
+        return reachedExit;
+    }
     
     //Respawn Setters
     public void setXCoord(double x){
@@ -65,12 +71,16 @@ public class Speler extends Square {
         onRightWall=false;
     }
     
-    
+    public void respawnPlayer(Level level) {
+        setXCoord(level.getRespawnX());
+        setYCoord(level.getRespawnY());
+        revive();
+    }
     
     
     
     public void updateCoords(Level level, Speler speler) {
-        ySpeed += acceleration;
+        ySpeed += gravity;
         yCoord += ySpeed;
         xCoord += xSpeed;
         // vertraging door wrijving
@@ -155,9 +165,13 @@ public class Speler extends Square {
     if (checkCollision(other)) {
         
         
-        if (other instanceof Block && ((Block) other).getBlockID() < 75) { // alle dodelijke block hebben een ID hoger dan deze waarde anders zou je moeten maken dat je 1, 2, 3, 4 allemaal moet cheken of ze dodenlijk zijn
+        if (other instanceof Block && ((Block) other).getBlockID() > 75) { // alle dodelijke block hebben een ID hoger dan deze waarde anders zou je moeten maken dat je 1, 2, 3, 4 allemaal moet cheken of ze dodenlijk zijn
         kill();// Also dat is met casting en behulp van chatGPT MAGIC
         return;
+        }
+        if (other instanceof Block && ((Block) other).getBlockID() == 2) {
+            nextLevel();
+            return;
         }
         double overlapX = Math.min(this.xCoord + this.xSize, other.getXCoord() + other.getXSize())
                 - Math.max(this.xCoord, other.getXCoord());
