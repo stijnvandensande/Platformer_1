@@ -98,6 +98,8 @@ public class Speler extends Square {
         ySpeed += gravity;
         yCoord += ySpeed;
         xCoord += xSpeed;
+        onLeftWall = false;
+        onRightWall = false;
         // vertraging door wrijving
         if (xSpeed > 0) {
             xSpeed -= friction;
@@ -126,8 +128,6 @@ public class Speler extends Square {
             xCoord = maxX-this.xSize;
             onRightWall = true;
             airJumpsLeft = 3;
-        } else {
-            onRightWall = false;
         }
         // check collition linkermuur
         if (xCoord <= 0) {
@@ -135,8 +135,6 @@ public class Speler extends Square {
             xCoord = 0;
             onLeftWall = true;
             airJumpsLeft = 3;
-        } else {
-            onLeftWall = false;
         }
         
         for (Block b : level.getBlocks()) {
@@ -164,9 +162,9 @@ public class Speler extends Square {
     }
     
     public void airJump(double jumpSpeed) {
-        if (airJumpsLeft > 0) {
+        if (airJumpsLeft > 0 && !isOnWall()) {
             ySpeed = -jumpSpeed;
-            airJumpsLeft -= 1;
+            airJumpsLeft--;
         }
     }
 
@@ -218,16 +216,20 @@ public class Speler extends Square {
             this.ySpeed = 0;
         }
         } else { // left/right
-            if (this.xCoord < other.getXCoord()) { // hit left side
+            if (xSpeed > 0) { // hit left side
                 this.xCoord = other.getXCoord() - this.xSize;
                 this.xSpeed = 0;
                 this.onRightWall = true;
                 this.airJumpsLeft = 3;
-            } else { // hit right side
+            } else if (xSpeed < 0) { // hit right side
                 this.xCoord = other.getXCoord() + other.getXSize();
                 this.xSpeed = 0;
                 this.onLeftWall = true;
                 this.airJumpsLeft = 3;
+            } else if (this.xCoord == other.getXCoord() + other.getXSize()) {
+                this.onLeftWall = true;
+            } else if (this.xCoord + this.xSize == other.getXCoord()){
+                this.onRightWall = true;
             }
         }
     }
