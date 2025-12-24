@@ -86,7 +86,7 @@ public class PrimaryController extends TimerTask{
         rootView.setFocusTraversable(true);
         Platform.runLater(() -> rootView.requestFocus());
         rootView.setOnKeyPressed(this::handleKeyPress);
-        speler = new Speler(50,50,10,10,boardSizeX,boardSizeY);
+        speler = new Speler(10,boardSizeY-120,10,10,boardSizeX,boardSizeY);
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(this, 0, 1000/60);
         updateView();

@@ -177,7 +177,6 @@ public class Speler extends Square {
            this.xCoord + this.xSize >= other.getXCoord() &&
            this.yCoord <= other.getYCoord() + other.getYSize() &&
            this.yCoord + this.ySize >= other.getYCoord()){
-            System.out.println("Is Touching");
             return true;
         } else{
         return false;
@@ -202,15 +201,14 @@ public class Speler extends Square {
                 - Math.max(this.yCoord, other.getYCoord());
         if (overlapY < overlapX) {
         if (this.ySpeed > 0) { // falling
-            if (other instanceof Block && ((Block) other).getBlockID() == 4) {
-                if (ySpeed > 10) {
-                    toRemoveBlock = other;
-                }
-            }
+            if (other instanceof Block && ((Block) other).getBlockID() == 4 && ySpeed > 10) {
+                this.toRemoveBlock = other;
+            } else {
             this.yCoord = other.getYCoord() - this.ySize;
             this.ySpeed = 0;
             this.onGround = true;
             this.airJumpsLeft = 3;
+            }
         } else if (this.ySpeed < 0) { // jumping up
             this.yCoord = other.getYCoord() + other.getYSize();
             this.ySpeed = 0;

@@ -29,14 +29,13 @@ public class Level {
     
     private void levelTest(int levelNumber) {
         if (levelNumber == 1) {
-        this.respawnCoordX = 50;
-        this.respawnCoordY = 200;
+        this.respawnCoordX = 10;
+        this.respawnCoordY = boardHeight-120;
         
         // Blocks test
-        blocks.add(new Block(100, boardHeight-50, 100, 10, 1));
-        blocks.add(new Block(250, boardHeight-150, 100, 10, 1));
-        blocks.add(new Block(400, 300, 100, 10, 1));
-        blocks.add(new Block(600,boardHeight-500,20,480,1));
+        blocks.add(new BlockPlatform(0, boardHeight-100, 100, 100));
+        blocks.add(new BlockPlatform(0, 0, 100, boardHeight-150));
+
 
         // Spikes tesy
         blocks.add(new BlockLava(300, 0, 50, 10));
@@ -44,10 +43,11 @@ public class Level {
         
         
         //Glass Test
-        blocks.add(new BlockGlass(800, boardHeight-50, 100, 10));
+        blocks.add(new BlockGlass(100, boardHeight-100, 100, 20));
+        blocks.add(new BlockGlass(100, boardHeight-170, 100, 20));
         
         // Exit Test
-        blocks.add(new ExitBlock(boardWidth-70,boardHeight-50,50,50));
+        blocks.add(new ExitBlock(100,boardHeight-20,100,20));
         }
         
         if (levelNumber == 2) {
