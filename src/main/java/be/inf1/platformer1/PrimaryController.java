@@ -27,7 +27,7 @@ public class PrimaryController extends TimerTask{
     private Speler speler;
     private final int boardSizeX = 1200;
     private final int boardSizeY = 800;
-    private final int jumpStrength = 10;
+    private final int jumpStrength = 6;
     private final double baseSpeed = 1;
     private double speedMultiplier= 1;
     private double movementSpeed = baseSpeed * speedMultiplier;
@@ -73,8 +73,10 @@ public class PrimaryController extends TimerTask{
             case SPACE:
                 if (speler.isOnGround()) {
                 speler.jump(jumpStrength);
+                } else if (speler.isOnWall()){
+                speler.wallJump(jumpStrength);
                 } else {
-                speler.wallJump(jumpStrength); // only works if touching wall
+                speler.airJump(jumpStrength);
                 }
                 break;
             case Q:
@@ -135,8 +137,7 @@ public void updateView() {
         speler.resetReachedExit();
         levelNumber++;
         if (levelNumber >= levels.size()) {
-        System.out.println("GAME COMPLETED!");
-        return; // of timer stoppen
+        levelNumber = 0;
         }
         speler.respawnPlayer(levels.get(levelNumber));
     }

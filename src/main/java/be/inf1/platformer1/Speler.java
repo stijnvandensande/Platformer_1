@@ -10,6 +10,7 @@ public class Speler extends Square {
     private boolean onGround;
     private boolean onLeftWall;
     private boolean onRightWall;
+    private int airJumpsLeft; 
     private boolean isDead;
     private boolean reachedExit;
     
@@ -25,11 +26,16 @@ public class Speler extends Square {
         this.onGround = false;
         this.onLeftWall = false;
         this.onRightWall = false;
+        this.airJumpsLeft = 3;
         this.reachedExit = false;
     }
     
     public boolean isOnGround() {
         return onGround;
+    }
+    
+    public boolean isOnWall() {
+        return (onLeftWall || onRightWall);
     }
     
     
@@ -104,6 +110,7 @@ public class Speler extends Square {
             ySpeed = 0;
             yCoord = maxY-this.ySize;
             onGround = true;
+            airJumpsLeft = 3;
         } else {
             onGround = false;
         }
@@ -113,6 +120,7 @@ public class Speler extends Square {
             xSpeed = 0;
             xCoord = maxX-this.xSize;
             onRightWall = true;
+            airJumpsLeft = 3;
         } else {
             onRightWall = false;
         }
@@ -121,6 +129,7 @@ public class Speler extends Square {
             xSpeed = 0;
             xCoord = 0;
             onLeftWall = true;
+            airJumpsLeft = 3;
         } else {
             onLeftWall = false;
         }
@@ -146,6 +155,13 @@ public class Speler extends Square {
         } else if (this.onLeftWall) {
             ySpeed = -jumpSpeed;
             xSpeed = (jumpSpeed/2);
+        }
+    }
+    
+    public void airJump(double jumpSpeed) {
+        if (airJumpsLeft > 0) {
+            ySpeed = -jumpSpeed;
+            airJumpsLeft -= 1;
         }
     }
 
@@ -186,6 +202,7 @@ public class Speler extends Square {
             this.yCoord = other.getYCoord() - this.ySize;
             this.ySpeed = 0;
             this.onGround = true;
+            this.airJumpsLeft = 3;
         } else if (this.ySpeed < 0) { // jumping up
             this.yCoord = other.getYCoord() + other.getYSize();
             this.ySpeed = 0;
@@ -195,10 +212,12 @@ public class Speler extends Square {
                 this.xCoord = other.getXCoord() - this.xSize;
                 this.xSpeed = 0;
                 this.onRightWall = true;
+                this.airJumpsLeft = 3;
             } else { // hit right side
                 this.xCoord = other.getXCoord() + other.getXSize();
                 this.xSpeed = 0;
-            this.onLeftWall = true;
+                this.onLeftWall = true;
+                this.airJumpsLeft = 3;
             }
         }
     }
