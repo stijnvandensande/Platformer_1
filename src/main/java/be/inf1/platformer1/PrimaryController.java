@@ -22,6 +22,7 @@ public class PrimaryController extends TimerTask{
 
     @FXML
     private AnchorPane rootView;
+   
     
     private Speler speler;
     private final int boardSizeX = 1200;
@@ -93,7 +94,6 @@ public class PrimaryController extends TimerTask{
     
 public void updateView() {
     rootView.getChildren().clear();
-    
     //check of player leeft
     if(speler.IsDead()){
         speler.respawnPlayer(levels.get(levelNumber));
