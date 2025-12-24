@@ -1,5 +1,6 @@
 package be.inf1.platformer1;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,9 +30,11 @@ public class PrimaryController extends TimerTask{
     private final double baseSpeed = 1;
     private double speedMultiplier= 1;
     private double movementSpeed = baseSpeed * speedMultiplier;
-    private Level currentLevel;
+    private ArrayList<Level> levels;
+    private int levelNumber;
     private Level level1;
     private Level level2;
+    private Level level3;
     
     public int getBoardSizeX() {
         return this.boardSizeX;
@@ -46,9 +49,14 @@ public class PrimaryController extends TimerTask{
     
     @FXML
     void initialize() {
+        levels = new ArrayList<Level>();
         level1 = new Level(boardSizeX,boardSizeY,1);
         level2 = new Level(boardSizeX,boardSizeY,2);
-        currentLevel = level1;
+        level3 = new Level(boardSizeX,boardSizeY,3);
+        levels.add(level1);
+        levels.add(level2);
+        levels.add(level3);
+        levelNumber = 0;
         rootView.setFocusTraversable(true);
         Platform.runLater(() -> rootView.requestFocus());
         rootView.setOnKeyPressed(this::handleKeyPress);
@@ -88,7 +96,7 @@ public void updateView() {
     
     //check of player leeft
     if(speler.IsDead()){
-        speler.respawnPlayer(level1);
+        speler.respawnPlayer(levels.get(levelNumber));
         speler.revive();
     }
     
@@ -99,7 +107,7 @@ public void updateView() {
     
     
     //Level bouwen
-    for (Block b : currentLevel.getBlocks()) {
+    for (Block b : levels.get(levelNumber).getBlocks()) {
         Rectangle r = new Rectangle(b.getXCoord(), b.getYCoord(), b.getXSize(), b.getYSize());
         
         if (b.getBlockID() == 1) r.setFill(Color.DARKGRAY);             //Blocks
@@ -122,9 +130,15 @@ public void updateView() {
 
     @Override
     public void run() {
-    speler.updateCoords(currentLevel, speler);
+    speler.updateCoords(levels.get(levelNumber), speler);
     if (speler.getReachedExit()) {
-        currentLevel = level2;
+        speler.resetReachedExit();
+        levelNumber++;
+        if (levelNumber >= levels.size()) {
+        System.out.println("GAME COMPLETED!");
+        return; // of timer stoppen
+        }
+        speler.respawnPlayer(levels.get(levelNumber));
     }
 
     Platform.runLater(this::updateView);

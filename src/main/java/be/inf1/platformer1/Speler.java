@@ -54,6 +54,10 @@ public class Speler extends Square {
         return reachedExit;
     }
     
+    public void resetReachedExit() {
+        this.reachedExit = false;
+    }
+    
     //Respawn Setters
     public void setXCoord(double x){
         this.xCoord = x;
@@ -199,5 +203,6 @@ public class Speler extends Square {
         }
     }
     }
+
 }
 

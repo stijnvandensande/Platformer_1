@@ -55,6 +55,15 @@ public class Level {
         this.respawnCoordY = 200;
             
         blocks.add(new Block(200,boardHeight-30,100,10,1));
+        blocks.add(new ExitBlock(100,boardHeight-50,50,50));
+        }
+        
+        if (levelNumber == 3) {
+            this.respawnCoordX = 200;
+            this.respawnCoordY = 200;
+            
+            blocks.add(new Block(400,boardHeight-30,100,10,1));
+            blocks.add(new ExitBlock(250,boardHeight-50,50,50));
         }
     }
     
