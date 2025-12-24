@@ -13,6 +13,7 @@ public class Speler extends Square {
     private int airJumpsLeft; 
     private boolean isDead;
     private boolean reachedExit;
+    public Block toRemoveBlock;
     
     
     public Speler(double xCoord, double yCoord, int xSize, int ySize,int maxX, int maxY) {
@@ -71,6 +72,10 @@ public class Speler extends Square {
     
     public void setYCoord(double y){
         this.yCoord = y;
+    }
+    
+    public Block getToRemoveBlock() {
+        return toRemoveBlock;
     }
     
     public void resetSpeed(){
@@ -180,7 +185,7 @@ public class Speler extends Square {
         return false;
         }
     }
-    public void Collision(Square other) {
+    public void Collision(Block other) {
     // check of ze elkaar raken
     if (checkCollision(other)) {
         
@@ -199,6 +204,11 @@ public class Speler extends Square {
                 - Math.max(this.yCoord, other.getYCoord());
         if (overlapY < overlapX) {
         if (this.ySpeed > 0) { // falling
+            if (other instanceof Block && ((Block) other).getBlockID() == 4) {
+                if (ySpeed > 10) {
+                    toRemoveBlock = other;
+                }
+            }
             this.yCoord = other.getYCoord() - this.ySize;
             this.ySpeed = 0;
             this.onGround = true;

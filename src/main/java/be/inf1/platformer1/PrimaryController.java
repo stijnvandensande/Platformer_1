@@ -11,6 +11,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.control.Label;
+
 
 public class PrimaryController extends TimerTask{
 
@@ -22,6 +24,18 @@ public class PrimaryController extends TimerTask{
 
     @FXML
     private AnchorPane rootView;
+    
+    @FXML
+    private AnchorPane gamePane;
+
+    @FXML
+    private AnchorPane hudPane;
+    
+    private Label levelText;
+    
+    private Label timerText;
+    
+    private int milliseconden;
    
     
     private Speler speler;
@@ -50,6 +64,17 @@ public class PrimaryController extends TimerTask{
     
     @FXML
     void initialize() {
+        levelText = new Label("Level: 1");
+        timerText = new Label("Time: 0");
+        levelText.setLayoutX(20);
+        levelText.setLayoutY(20);
+        levelText.setTextFill(Color.WHITE);
+        timerText.setLayoutX(20);
+        timerText.setLayoutY(40);
+        timerText.setTextFill(Color.WHITE);
+
+        hudPane.getChildren().add(levelText);
+        hudPane.getChildren().add(timerText);
         levels = new ArrayList<Level>();
         level1 = new Level(boardSizeX,boardSizeY,1);
         level2 = new Level(boardSizeX,boardSizeY,2);
@@ -95,7 +120,10 @@ public class PrimaryController extends TimerTask{
     
     
 public void updateView() {
-    rootView.getChildren().clear();
+    gamePane.getChildren().clear();
+    levelText.setText("Level: " + (levelNumber + 1));
+    milliseconden += 1000/60;
+    timerText.setText("Time: " + milliseconden/1000);
     //check of player leeft
     if(speler.IsDead()){
         speler.respawnPlayer(levels.get(levelNumber));
@@ -105,7 +133,7 @@ public void updateView() {
     //achtergrond
     Rectangle backgroundView = new Rectangle(0,0,boardSizeX,boardSizeY);
     backgroundView.setFill(Color.GRAY); //Is iets aangenamer dan ROOD
-    rootView.getChildren().add(backgroundView);
+    gamePane.getChildren().add(backgroundView);
     
     
     //Level bouwen
@@ -121,18 +149,19 @@ public void updateView() {
         
         
         
-        rootView.getChildren().add(r);
+        gamePane.getChildren().add(r);
     }
         
     Rectangle squareView = new Rectangle(speler.getXCoord(),speler.getYCoord(),speler.getXSize(),speler.getYSize());
     squareView.setFill(Color.BLUE);
-    rootView.getChildren().add(squareView);
+    gamePane.getChildren().add(squareView);
     
     }
 
     @Override
     public void run() {
     speler.updateCoords(levels.get(levelNumber), speler);
+    levels.get(levelNumber).getBlocks().remove(speler.getToRemoveBlock());
     if (speler.getReachedExit()) {
         speler.resetReachedExit();
         levelNumber++;
