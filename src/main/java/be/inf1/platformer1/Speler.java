@@ -142,6 +142,12 @@ public class Speler extends Square {
             onGround = false;
         }
         
+        // check collition plafond
+        if (yCoord < 0) {
+            ySpeed = 0;
+            yCoord = 0;
+        }
+        
         // check collition rechtermuur
         if ((xCoord >= (maxX-this.xSize))) {
             xSpeed = 0;
@@ -162,7 +168,13 @@ public class Speler extends Square {
         }
     }
     
+    public double getYSpeed() {
+        return this.ySpeed;
+    }
     
+    public double getXSpeed() {
+        return this.xSpeed;
+    }
     
     
     public void jump(double jumpSpeed) {
@@ -222,17 +234,18 @@ public class Speler extends Square {
     if (prevY + ySize <= other.getYCoord()) {
 
         // Breekbaar glas
-        if (type == "glass" && ySpeed > 8) {
+        if (type == "glass" && ySpeed > 10) {
             toRemoveBlock = other;
-            ySpeed *= 0.85;
             return;
         }
         
         if (type == "slime") {
+        yCoord = other.getYCoord() - ySize;
         bounce("vertical");
         return;
         }
         if (type == "jumpPad") {
+        yCoord = other.getYCoord() - ySize;
         jumpPadLaunch();
         return;
         }
@@ -247,6 +260,7 @@ public class Speler extends Square {
     // kop tegen platform
     if (prevY >= other.getYCoord() + other.getYSize()) {
         if (type == "slime") {
+        yCoord = other.getYCoord() + other.getYSize();
         bounce("vertical");
         return;
         }
@@ -258,6 +272,7 @@ public class Speler extends Square {
     // linkerkant platform
     if (prevX + xSize <= other.getXCoord()) {
         if (type == "slime") {
+        xCoord = other.getXCoord() - xSize;
         bounce("horizontal");
         return;
         }
@@ -271,6 +286,7 @@ public class Speler extends Square {
     // rechterkant platform
     if (prevX >= other.getXCoord() + other.getXSize()) {
         if (type == "slime") {
+        xCoord = other.getXCoord() + other.getXSize();
         bounce("horizontal");
         return;
         }

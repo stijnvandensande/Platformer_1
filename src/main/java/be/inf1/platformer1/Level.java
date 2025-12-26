@@ -44,19 +44,19 @@ public class Level {
             blocks.add(new BlockPlatform(300, 200, 100,20));                //laatste Jump platform
             
             
-            // Spikes
+            // Lava
             blocks.add(new BlockLava(300,boardHeight-20,boardWidth-300,20));//botttom spikes
             blocks.add(new BlockLava(boardWidth-20, 0, 20, boardHeight));   //side spikes
-
+            blocks.add(new BlockLava(300, 220, 20, boardHeight-370));
             
         
             //Glass
             blocks.add(new BlockGlass(100, boardHeight-100, 100, 20));      //overhang
-            blocks.add(new BlockSlime(100, boardHeight-170, 100, 20));      //brug
+            blocks.add(new BlockGlass(100, boardHeight-170, 100, 20));      //brug
             
-            
-            //JumpPad test
-            blocks.add(new BlockJumpPad(400,boardHeight-100,100,20));
+            //JumpPad
+            blocks.add(new BlockJumpPad(800,boardHeight-550,100,20));
+
         
             //Exit
             blocks.add(new ExitBlock(100,boardHeight-20,100,20));           //finish

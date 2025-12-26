@@ -35,14 +35,22 @@ public class PrimaryController extends TimerTask{
     
     private Label timerText;
     
+    private Label levelTimesText;
+    
     private double milliseconden;
+    
+    private boolean qPressed = false;
+    private boolean dPressed = false;
+    private boolean spacePressed = false;
+    
+    private String levelTimesTextContent;
    
     
     private Speler speler;
-    private final int boardSizeX = 1200;
-    private final int boardSizeY = 800;
+    private final int boardSizeX = 1920;
+    private final int boardSizeY = 1000;
     private final int jumpStrength = 6;
-    private final double baseSpeed = 1;
+    private final double baseSpeed = 0.3;
     private double speedMultiplier= 1;
     private double movementSpeed = baseSpeed * speedMultiplier;
     private ArrayList<Level> levels;
@@ -50,6 +58,7 @@ public class PrimaryController extends TimerTask{
     private Level level1;
     private Level level2;
     private Level level3;
+    private ArrayList<String> completedLevelsTimes;
     
     public int getBoardSizeX() {
         return this.boardSizeX;
@@ -64,8 +73,13 @@ public class PrimaryController extends TimerTask{
     
     @FXML
     void initialize() {
-        levelText = new Label("Level: 1");
+        levelTimesTextContent = "";
+        levelText = new Label("Level 1");
         timerText = new Label("Time: 0");
+        levelTimesText = new Label("Completed levels: ");
+        levelTimesText.setLayoutX(20);
+        levelTimesText.setLayoutY(60);
+        levelTimesText.setTextFill(Color.WHITE);
         levelText.setLayoutX(20);
         levelText.setLayoutY(20);
         levelText.setTextFill(Color.WHITE);
@@ -75,6 +89,7 @@ public class PrimaryController extends TimerTask{
 
         hudPane.getChildren().add(levelText);
         hudPane.getChildren().add(timerText);
+        hudPane.getChildren().add(levelTimesText);
         levels = new ArrayList<Level>();
         level1 = new Level(boardSizeX,boardSizeY,1);
         level2 = new Level(boardSizeX,boardSizeY,2);
@@ -83,36 +98,47 @@ public class PrimaryController extends TimerTask{
         levels.add(level2);
         levels.add(level3);
         levelNumber = 0;
+        completedLevelsTimes = new ArrayList<String>();
+        completedLevelsTimes.add("Completed Levels:");
         rootView.setFocusTraversable(true);
         Platform.runLater(() -> rootView.requestFocus());
         rootView.setOnKeyPressed(this::handleKeyPress);
+        rootView.setOnKeyReleased(this::handleKeyRelease);
         speler = new Speler(10,boardSizeY-120,10,10,boardSizeX,boardSizeY);
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(this, 0, 1000/60);
         updateView();
     }
 
-@FXML
+    @FXML
     void handleKeyPress(KeyEvent e) {
-        switch(e.getCode()) {
-            case SPACE:
-                if (speler.isOnGround()) {
-                speler.jump(jumpStrength);
-                } else if (speler.isOnWall()){
-                speler.wallJump(jumpStrength);
-                } else {
-                speler.airJump(jumpStrength);
-                }
-                break;
+        switch (e.getCode()) {
             case Q:
-                speler.move(-movementSpeed);
+                qPressed = true;
                 break;
             case D:
-                speler.move(movementSpeed);
+                dPressed = true;
+                break;
+            case SPACE:
+                spacePressed = true;
+                break;
+        }
+    } 
+    
+    @FXML
+    void handleKeyRelease(KeyEvent e) {
+        switch (e.getCode()) {
+            case Q:
+                qPressed = false;
+                break;
+            case D:
+                dPressed = false;
+                break;
+            case SPACE:
+                spacePressed = false;
                 break;
         }
     }
-    
     
 
       
@@ -121,9 +147,14 @@ public class PrimaryController extends TimerTask{
     
 public void updateView() {
     gamePane.getChildren().clear();
-    levelText.setText("Level: " + (levelNumber + 1));
+    levelText.setText("Level " + (levelNumber + 1));
     milliseconden += 1000/60;
     timerText.setText("Time: " + milliseconden/1000);
+    for (String i : completedLevelsTimes) {
+        levelTimesTextContent+=i;
+    }
+    levelTimesText.setText(levelTimesTextContent);
+    levelTimesTextContent="";
     //check of player leeft
     if(speler.IsDead()){
         speler.respawnPlayer(levels.get(levelNumber));
@@ -165,10 +196,29 @@ public void updateView() {
 
     @Override
     public void run() {
+    if (qPressed) {
+        speler.move(-movementSpeed);
+    }
+
+    if (dPressed) {
+        speler.move(movementSpeed);
+    }
+
+    if (spacePressed) {
+        if (speler.isOnGround()) {
+            speler.jump(jumpStrength);
+        } else if (speler.isOnWall()) {
+            speler.wallJump(jumpStrength);
+        } else {
+            speler.airJump(jumpStrength);
+        }
+        spacePressed = false; // important
+    }
     speler.updateCoords(levels.get(levelNumber), speler);
     levels.get(levelNumber).getBlocks().remove(speler.getToRemoveBlock());
     if (speler.getReachedExit()) {
         speler.resetReachedExit();
+        completedLevelsTimes.add("\nLevel " + levelNumber + ": " + milliseconden/1000);
         levelNumber++;
         if (levelNumber >= levels.size()) {
         levelNumber = 0;
