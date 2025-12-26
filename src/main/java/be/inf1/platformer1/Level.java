@@ -27,35 +27,101 @@ public class Level {
 
 
     
-    private void levelTest(int levelNumber) {
+    private void levelTest(int levelNumber) { // == de Level maker
         if (levelNumber == 1) {
-        this.respawnCoordX = 10;
-        this.respawnCoordY = boardHeight-120;
+            this.respawnCoordX = 10;
+            this.respawnCoordY = boardHeight-120;
         
-        // Blocks test
-        blocks.add(new BlockPlatform(0, boardHeight-100, 100, 100));
-        blocks.add(new BlockPlatform(0, 0, 100, boardHeight-150));
+            // Blocks
+            blocks.add(new BlockPlatform(0, boardHeight-100, 100, 100));    //spawn platform
+            blocks.add(new BlockPlatform(0, 0, 100, boardHeight-150));      //eerste kolom
+            blocks.add(new BlockPlatform(200, boardHeight-100, 100, 100));  //tweede platform
+            blocks.add(new BlockPlatform(200, 200, 100, boardHeight-350));  //tweede kolom
+            blocks.add(new BlockPlatform(300, boardHeight-100, 100,20));    //Eerste Jump platform
+            blocks.add(new BlockPlatform(650, boardHeight-150, 100,20));    //Tweede Jump platform
+            blocks.add(new BlockPlatform(1000, boardHeight-300, 175,20));   //Derde Jump platform
+            blocks.add(new BlockPlatform(550, boardHeight-500, 150,20));    //Vierde Jump platform
+            blocks.add(new BlockPlatform(300, 200, 100,20));                //laatste Jump platform
+            
+            
+            // Spikes
+            blocks.add(new BlockLava(300,boardHeight-20,boardWidth-300,20));//botttom spikes
+            blocks.add(new BlockLava(boardWidth-20, 0, 20, boardHeight));   //side spikes
 
-
-        // Spikes tesy
-        blocks.add(new BlockLava(300, 0, 50, 10));
-        blocks.add(new BlockLava(350, 480, 50, 10));
+            
         
+            //Glass
+            blocks.add(new BlockGlass(100, boardHeight-100, 100, 20));      //overhang
+            blocks.add(new BlockGlass(100, boardHeight-170, 100, 20));      //brug
+            
         
-        //Glass Test
-        blocks.add(new BlockGlass(100, boardHeight-100, 100, 20));
-        blocks.add(new BlockGlass(100, boardHeight-170, 100, 20));
-        
-        // Exit Test
-        blocks.add(new ExitBlock(100,boardHeight-20,100,20));
+            //Exit
+            blocks.add(new ExitBlock(100,boardHeight-20,100,20));           //finish
         }
         
+        
+        
+        
+        
+        
+        
         if (levelNumber == 2) {
-        this.respawnCoordX = 200;
-        this.respawnCoordY = 200;
+            this.respawnCoordX = 150;
+            this.respawnCoordY = boardHeight-90 ;
             
-        blocks.add(new Block(200,boardHeight-30,100,10,1));
-        blocks.add(new ExitBlock(100,boardHeight-50,50,50));
+            blocks.add(new BlockPlatform(0, boardHeight-100, 100, 100));    //Block
+            blocks.add(new BlockPlatform(100, boardHeight-80, 150, 80));    //spawnplatform
+            blocks.add(new BlockPlatform(250, boardHeight-30, 150, 10));    //Low hovering platform bij lava
+            blocks.add(new BlockPlatform(100, boardHeight-500, 80, 300));   // linker muur
+            
+            
+            blocks.add(new BlockGlass(860, boardHeight-360,  60, 10));
+
+            blocks.add(new BlockGlass(835, boardHeight-350, 110, 10));
+            blocks.add(new BlockGlass(800, boardHeight-340, 180, 10));
+            blocks.add(new BlockGlass(770, boardHeight-330, 240, 10));
+            blocks.add(new BlockGlass(750, boardHeight-320, 280, 10));
+            blocks.add(new BlockGlass(770, boardHeight-310, 240, 10));
+            blocks.add(new BlockGlass(800, boardHeight-300, 180, 10));
+            blocks.add(new BlockGlass(835, boardHeight-290, 110, 10));
+            blocks.add(new BlockGlass(860, boardHeight-280,  60, 10));
+            
+            
+            
+            
+            
+            
+            blocks.add(new BlockPlatform(900, boardHeight-300, 80, 300));   // rechter muur onder
+            blocks.add(new BlockPlatform(900, 0, 80, 480));                 // rechter muur boven
+
+            blocks.add(new BlockPlatform(300, boardHeight-160, 120, 20));   //eerste platform
+            blocks.add(new BlockPlatform(500, boardHeight-260, 120, 20));   //Tweede platform
+            blocks.add(new BlockPlatform(600, boardHeight-520, 100, 20));   //vierde platform
+            blocks.add(new BlockPlatform(400, boardHeight-420, 100, 20));   //derde platform
+            blocks.add(new BlockPlatform(80, 80, 150, 20));                 //Platform vanboven
+            blocks.add(new BlockPlatform(730, boardHeight-30, 170, 10));   //Catch platform voor te landen na ice desroyed
+
+            
+            
+            
+            blocks.add(new BlockPlatform(1050, boardHeight-40, 125, 20));    //Eindplatform
+            blocks.add(new ExitBlock(1085, boardHeight-80, 55, 40));         //Exit
+
+            blocks.add(new BlockLava(0, boardHeight-20, boardWidth, 20));   //Lalalalava
+            
+            
+            
+            
+            
+
+
+
+            
+
+
+            
+
+            
         }
         
         if (levelNumber == 3) {

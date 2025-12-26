@@ -10,7 +10,8 @@ public class Speler extends Square {
     private boolean onGround;
     private boolean onLeftWall;
     private boolean onRightWall;
-    private int airJumpsLeft; 
+    private int airJumpsLeft;
+    protected int amountOfAirJumps;
     private boolean isDead;
     private boolean reachedExit;
     public Block toRemoveBlock;
@@ -27,7 +28,8 @@ public class Speler extends Square {
         this.onGround = false;
         this.onLeftWall = false;
         this.onRightWall = false;
-        this.airJumpsLeft = 3;
+        this.amountOfAirJumps = 1;
+        
         this.reachedExit = false;
     }
     
@@ -39,11 +41,9 @@ public class Speler extends Square {
         return (onLeftWall || onRightWall);
     }
     
-    
     public boolean IsDead(){
         return isDead;
     }
-    
     
     public void kill(){ //Kill player
         isDead = true;
@@ -93,6 +93,12 @@ public class Speler extends Square {
     }
     
     
+    public void bounce(){
+        this.ySpeed*=-1; 
+    }
+    
+    
+    
     
     public void updateCoords(Level level, Speler speler) {
         ySpeed += gravity;
@@ -117,7 +123,7 @@ public class Speler extends Square {
             ySpeed = 0;
             yCoord = maxY-this.ySize;
             onGround = true;
-            airJumpsLeft = 3;
+            airJumpsLeft = amountOfAirJumps;
         } else {
             onGround = false;
         }
@@ -127,18 +133,18 @@ public class Speler extends Square {
             xSpeed = 0;
             xCoord = maxX-this.xSize;
             onRightWall = true;
-            airJumpsLeft = 3;
+            airJumpsLeft = amountOfAirJumps;
         }
         // check collition linkermuur
         if (xCoord <= 0) {
             xSpeed = 0;
             xCoord = 0;
             onLeftWall = true;
-            airJumpsLeft = 3;
+            airJumpsLeft = amountOfAirJumps;
         }
         
         for (Block b : level.getBlocks()) {
-        speler.Collision(b);
+            speler.Collision(b);
         }
     }
     
@@ -184,53 +190,66 @@ public class Speler extends Square {
     }
     public void Collision(Block other) {
     // check of ze elkaar raken
-    if (checkCollision(other)) {
-        
-        
-        if (other instanceof Block && ((Block) other).getBlockID() > 75) { // alle dodelijke block hebben een ID hoger dan deze waarde anders zou je moeten maken dat je 1, 2, 3, 4 allemaal moet cheken of ze dodenlijk zijn
-        kill();// Also dat is met casting en behulp van chatGPT MAGIC
-        return;
-        }
-        if (other instanceof Block && ((Block) other).getBlockID() == 2) {
-            nextLevel();
-            return;
-        }
-        double overlapX = Math.min(this.xCoord + this.xSize, other.getXCoord() + other.getXSize())
-                - Math.max(this.xCoord, other.getXCoord());
-        double overlapY = Math.min(this.yCoord + this.ySize, other.getYCoord() + other.getYSize())
-                - Math.max(this.yCoord, other.getYCoord());
-        if (overlapY < overlapX) {
-        if (this.ySpeed > 0) { // falling
-            if (other instanceof Block && ((Block) other).getBlockID() == 4 && ySpeed > 10) {
-                this.toRemoveBlock = other;
-            } else {
-            this.yCoord = other.getYCoord() - this.ySize;
-            this.ySpeed = 0;
-            this.onGround = true;
-            this.airJumpsLeft = 3;
+        if (checkCollision(other)) {
+            if (other instanceof Block && ((Block) other).getBlockID() > 75) { // alle dodelijke block hebben een ID hoger dan deze waarde anders zou je moeten maken dat je 1, 2, 3, 4 allemaal moet cheken of ze dodenlijk zijn
+                kill();// Also dat is met casting en behulp van chatGPT MAGIC: het betekend bekijk other alsof het een Block is en pas de getBlockID eroptoe
+                return;
             }
-        } else if (this.ySpeed < 0) { // jumping up
-            this.yCoord = other.getYCoord() + other.getYSize();
-            this.ySpeed = 0;
-        }
-        } else { // left/right
-            if (xSpeed > 0) { // hit left side
-                this.xCoord = other.getXCoord() - this.xSize;
-                this.xSpeed = 0;
-                this.onRightWall = true;
-                this.airJumpsLeft = 3;
-            } else if (xSpeed < 0) { // hit right side
-                this.xCoord = other.getXCoord() + other.getXSize();
-                this.xSpeed = 0;
-                this.onLeftWall = true;
-                this.airJumpsLeft = 3;
-            } else if (this.xCoord == other.getXCoord() + other.getXSize()) {
-                this.onLeftWall = true;
-            } else if (this.xCoord + this.xSize == other.getXCoord()){
-                this.onRightWall = true;
+            
+            if (other instanceof Block && ((Block) other).getBlockID() == 2) { // is toching finish
+                nextLevel();
+                return;
+            }
+            
+            if (other instanceof Block && ((Block) other).getBlockID() == 6) { //is touchinh slimeblock
+                bounce();
+                return;
+            }
+            
+            
+            
+            
+            
+            
+        
+            double overlapX = Math.min(this.xCoord + this.xSize, other.getXCoord() + other.getXSize())
+                    - Math.max(this.xCoord, other.getXCoord());
+            double overlapY = Math.min(this.yCoord + this.ySize, other.getYCoord() + other.getYSize())
+                    - Math.max(this.yCoord, other.getYCoord());
+        
+            if (overlapY < overlapX) {
+                if (this.ySpeed > 0) { // falling
+                    if (other instanceof Block && ((Block) other).getBlockID() == 4 && ySpeed > 8) {
+                        this.toRemoveBlock = other;
+                        this.ySpeed*=0.85; //Je remt een beetje af
+                    } else {
+                        this.yCoord = other.getYCoord() - this.ySize;
+                        this.ySpeed = 0;
+                        this.onGround = true;
+                        this.airJumpsLeft = amountOfAirJumps;
+                    }
+                } else if (this.ySpeed < 0) { // jumping up
+                    this.yCoord = other.getYCoord() + other.getYSize();
+                    this.ySpeed = 0;
+                }
+            } else { // left/right
+                    if (xSpeed > 0) { // hit left side
+                        this.xCoord = other.getXCoord() - this.xSize;
+                        this.xSpeed = 0;
+                        this.onRightWall = true;
+                        this.airJumpsLeft = amountOfAirJumps;
+                } else if (xSpeed < 0) { // hit right side
+                    this.xCoord = other.getXCoord() + other.getXSize();
+                    this.xSpeed = 0;
+                    this.onLeftWall = true;
+                    this.airJumpsLeft = amountOfAirJumps;
+                } else if (this.xCoord == other.getXCoord() + other.getXSize()) {
+                    this.onLeftWall = true;
+                } else if (this.xCoord + this.xSize == other.getXCoord()){
+                    this.onRightWall = true;
+                }
             }
         }
-    }
     }
 
 }

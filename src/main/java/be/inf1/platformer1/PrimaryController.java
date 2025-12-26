@@ -128,6 +128,7 @@ public void updateView() {
     if(speler.IsDead()){
         speler.respawnPlayer(levels.get(levelNumber));
         speler.revive();
+        speler.resetSpeed();
     }
     
     //achtergrond
@@ -141,10 +142,14 @@ public void updateView() {
         Rectangle r = new Rectangle(b.getXCoord(), b.getYCoord(), b.getXSize(), b.getYSize());
         
         if (b.getBlockID() == 1) r.setFill(Color.DARKGRAY);             //Blocks
-        if (b.getBlockID() == 99) r.setFill(Color.RED);                  //Spikes
+        if (b.getBlockID() == 2) r.setFill(Color.BLACK);                //Finish
+        if (b.getBlockID() == 3) r.setFill(Color.web("#fa6400"));       //Lava
+        if (b.getBlockID() == 99) r.setFill(Color.RED);                 //Spikes
         if (b.getBlockID() == 3) r.setFill(Color.web("#fa6400"));       //Lava
         if (b.getBlockID() == 4) r.setFill(Color.web("#8aefff"));       //Glass
-        //if (b.getBlockID() == 5) r.setFill(Color.web("#8aefff"));       //Teleport
+        if (b.getBlockID() == 5) r.setFill(Color.web("#af32ed"));       //JumpPad
+        if (b.getBlockID() == 6) r.setFill(Color.web("#65FF00"));       //Slime
+        
         
         
         
