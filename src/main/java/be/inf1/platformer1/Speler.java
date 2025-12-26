@@ -105,8 +105,19 @@ public class Speler extends Square {
         }
     }
     
-    public void jumpPadLaunch() {
-        this.ySpeed = -15;
+    public void jumpPadLaunch(String direction) {
+        if (direction == "left") {
+            this.xSpeed = -15;
+        }
+        if (direction == "right") {
+            this.xSpeed = 15;
+        }
+        if (direction == "up") {
+            this.ySpeed = -15;
+        }
+        if (direction == "down") {
+            this.ySpeed = 15;
+        }
     }
     
     
@@ -236,6 +247,7 @@ public class Speler extends Square {
         // Breekbaar glas
         if (type == "glass" && ySpeed > 10) {
             toRemoveBlock = other;
+            ySpeed*=0.60;
             return;
         }
         
@@ -246,7 +258,7 @@ public class Speler extends Square {
         }
         if (type == "jumpPad") {
         yCoord = other.getYCoord() - ySize;
-        jumpPadLaunch();
+        jumpPadLaunch("up");
         return;
         }
 
@@ -259,6 +271,16 @@ public class Speler extends Square {
 
     // kop tegen platform
     if (prevY >= other.getYCoord() + other.getYSize()) {
+        if (type == "glass" && ySpeed < -10) {
+            toRemoveBlock = other;
+            ySpeed*=0.60;
+            return;
+        }
+        if (type == "jumpPad") {
+        yCoord = other.getYCoord() + other.getYSize();
+        jumpPadLaunch("down");
+        return;
+        }
         if (type == "slime") {
         yCoord = other.getYCoord() + other.getYSize();
         bounce("vertical");
@@ -271,6 +293,16 @@ public class Speler extends Square {
 
     // linkerkant platform
     if (prevX + xSize <= other.getXCoord()) {
+        if (type == "glass" && xSpeed > 10) {
+            toRemoveBlock = other;
+            xSpeed*=0.60;
+            return;
+        }
+        if (type == "jumpPad") {
+        xCoord = other.getXCoord() - xSize;
+        jumpPadLaunch("left");
+        return;
+        }
         if (type == "slime") {
         xCoord = other.getXCoord() - xSize;
         bounce("horizontal");
@@ -285,6 +317,16 @@ public class Speler extends Square {
 
     // rechterkant platform
     if (prevX >= other.getXCoord() + other.getXSize()) {
+        if (type == "glass" && xSpeed < -10) {
+            toRemoveBlock = other;
+            xSpeed*=0.60;
+            return;
+        }
+        if (type == "jumpPad") {
+        xCoord = other.getXCoord() + other.getXSize();
+        jumpPadLaunch("right");
+        return;
+        }
         if (type == "slime") {
         xCoord = other.getXCoord() + other.getXSize();
         bounce("horizontal");

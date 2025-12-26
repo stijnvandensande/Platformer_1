@@ -153,6 +153,10 @@ public class PrimaryController extends TimerTask{
         completedLevelsTimes.clear();
         completedLevelsTimes.add("Completed Levels:");
         milliseconden = 0;
+        levels.clear();
+        levels.add(new Level(boardSizeX, boardSizeY, 1));
+        levels.add(new Level(boardSizeX, boardSizeY, 2));
+        levels.add(new Level(boardSizeX, boardSizeY, 3));
     }
       
     

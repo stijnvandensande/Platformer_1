@@ -42,8 +42,8 @@ public class Level {
             blocks.add(new BlockPlatform(1000, boardHeight-300, 175,20));   //Derde Jump platform
             blocks.add(new BlockPlatform(550, boardHeight-500, 150,20));    //Vierde Jump platform
             blocks.add(new BlockPlatform(300, 200, 100,20));                //laatste Jump platform
-            
-            
+            blocks.add(new BlockPlatform(780,boardHeight-550,20,20));
+            blocks.add(new BlockPlatform(900,boardHeight-550,20,20));
             // Lava
             blocks.add(new BlockLava(300,boardHeight-20,boardWidth-300,20));//botttom spikes
             blocks.add(new BlockLava(boardWidth-20, 0, 20, boardHeight));   //side spikes
@@ -56,18 +56,12 @@ public class Level {
             
             //JumpPad
             blocks.add(new BlockJumpPad(800,boardHeight-550,100,20));
-
+            blocks.add(new BlockJumpPad(1200,boardHeight-950,20,100));
         
             //Exit
             blocks.add(new ExitBlock(100,boardHeight-20,100,20));           //finish
         }
-        
-        
-        
-        
-        
-        
-        
+
         if (levelNumber == 2) {
             this.respawnCoordX = 150;
             this.respawnCoordY = boardHeight-90 ;
@@ -78,20 +72,10 @@ public class Level {
             blocks.add(new BlockPlatform(100, boardHeight-500, 80, 300));   // linker muur
             
             
-            blocks.add(new BlockGlass(860, boardHeight-360,  60, 10));
-
-            blocks.add(new BlockGlass(835, boardHeight-350, 110, 10));
-            blocks.add(new BlockGlass(800, boardHeight-340, 180, 10));
-            blocks.add(new BlockGlass(770, boardHeight-330, 240, 10));
-            blocks.add(new BlockGlass(750, boardHeight-320, 280, 10));
-            blocks.add(new BlockGlass(770, boardHeight-310, 240, 10));
-            blocks.add(new BlockGlass(800, boardHeight-300, 180, 10));
-            blocks.add(new BlockGlass(835, boardHeight-290, 110, 10));
-            blocks.add(new BlockGlass(860, boardHeight-280,  60, 10));
             
             
             
-            
+            blocks.add(new BlockGlass(900, 480, 20, 320));
             
             
             blocks.add(new BlockPlatform(900, boardHeight-300, 80, 300));   // rechter muur onder
