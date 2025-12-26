@@ -52,8 +52,11 @@ public class Level {
         
             //Glass
             blocks.add(new BlockGlass(100, boardHeight-100, 100, 20));      //overhang
-            blocks.add(new BlockGlass(100, boardHeight-170, 100, 20));      //brug
+            blocks.add(new BlockSlime(100, boardHeight-170, 100, 20));      //brug
             
+            
+            //JumpPad test
+            blocks.add(new BlockJumpPad(400,boardHeight-100,100,20));
         
             //Exit
             blocks.add(new ExitBlock(100,boardHeight-20,100,20));           //finish
@@ -128,7 +131,7 @@ public class Level {
             this.respawnCoordX = 200;
             this.respawnCoordY = 200;
             
-            blocks.add(new Block(400,boardHeight-30,100,10,1));
+            blocks.add(new BlockPlatform(400,boardHeight-30,100,10));
             blocks.add(new ExitBlock(250,boardHeight-50,50,50));
         }
     }

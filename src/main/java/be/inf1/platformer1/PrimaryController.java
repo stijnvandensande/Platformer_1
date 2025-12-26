@@ -35,7 +35,7 @@ public class PrimaryController extends TimerTask{
     
     private Label timerText;
     
-    private int milliseconden;
+    private double milliseconden;
    
     
     private Speler speler;
@@ -141,14 +141,14 @@ public void updateView() {
     for (Block b : levels.get(levelNumber).getBlocks()) {
         Rectangle r = new Rectangle(b.getXCoord(), b.getYCoord(), b.getXSize(), b.getYSize());
         
-        if (b.getBlockID() == 1) r.setFill(Color.DARKGRAY);             //Blocks
-        if (b.getBlockID() == 2) r.setFill(Color.BLACK);                //Finish
-        if (b.getBlockID() == 3) r.setFill(Color.web("#fa6400"));       //Lava
-        if (b.getBlockID() == 99) r.setFill(Color.RED);                 //Spikes
-        if (b.getBlockID() == 3) r.setFill(Color.web("#fa6400"));       //Lava
-        if (b.getBlockID() == 4) r.setFill(Color.web("#8aefff"));       //Glass
-        if (b.getBlockID() == 5) r.setFill(Color.web("#af32ed"));       //JumpPad
-        if (b.getBlockID() == 6) r.setFill(Color.web("#65FF00"));       //Slime
+        if (b.getType() == "platform") r.setFill(Color.DARKGRAY);             //Blocks
+        if (b.getType() == "exit") r.setFill(Color.BLACK);                //Finish
+        if (b.getType() == "lava") r.setFill(Color.web("#fa6400"));       //Lava
+        if (b.getType() == "spikes") r.setFill(Color.RED);                 //Spikes
+        if (b.getType() == "lava") r.setFill(Color.web("#fa6400"));       //Lava
+        if (b.getType() == "glass") r.setFill(Color.web("#8aefff"));       //Glass
+        if (b.getType() == "jumpPad") r.setFill(Color.web("#af32ed"));       //JumpPad
+        if (b.getType() == "slime") r.setFill(Color.web("#65FF00"));       //Slime
         
         
         

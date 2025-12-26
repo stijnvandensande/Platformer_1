@@ -3,13 +3,13 @@ package be.inf1.platformer1;
 public class Block extends Square{  //is de basis
     
     
-    protected int blockID;
+    protected String type;
     protected String color;
     
 
-    public Block(double xCoord, double yCoord , int xSize, int ySize, int blockID) {
+    public Block(double xCoord, double yCoord , int xSize, int ySize, String type) {
         super(xCoord, yCoord,xSize,ySize);
-        this.blockID= blockID;
+        this.type= type;
     }
     
     public double getBlockXCoord() {
@@ -28,26 +28,9 @@ public class Block extends Square{  //is de basis
         return this.ySize;
     }
     
-    public int getBlockID() {
-        return this.blockID;
+    public String getType() {
+        return this.type;
     }
-    
-
-    
-    public String getCollor(int blockID){
-        
-        if (blockID ==1 ){
-            return "DARKGRAY";
-        }
-        if (blockID ==2 ){
-            return "RED";
-        }
-        
-        else{
-            return("");
-        }
-    }
-
 
 
 }
