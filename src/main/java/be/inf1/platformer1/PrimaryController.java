@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 
 
 public class PrimaryController extends TimerTask{
@@ -78,14 +79,17 @@ public class PrimaryController extends TimerTask{
         timerText = new Label("Time: 0");
         levelTimesText = new Label("Completed levels: ");
         levelTimesText.setLayoutX(20);
-        levelTimesText.setLayoutY(60);
+        levelTimesText.setLayoutY(100);
         levelTimesText.setTextFill(Color.WHITE);
+        levelTimesText.setFont(new Font(20));
         levelText.setLayoutX(20);
         levelText.setLayoutY(20);
         levelText.setTextFill(Color.WHITE);
+        levelText.setFont(new Font(20));
         timerText.setLayoutX(20);
-        timerText.setLayoutY(40);
+        timerText.setLayoutY(60);
         timerText.setTextFill(Color.WHITE);
+        timerText.setFont(new Font(20));
 
         hudPane.getChildren().add(levelText);
         hudPane.getChildren().add(timerText);
@@ -122,6 +126,9 @@ public class PrimaryController extends TimerTask{
             case SPACE:
                 spacePressed = true;
                 break;
+            case R:
+                restartGame();
+                break;
         }
     } 
     
@@ -140,7 +147,13 @@ public class PrimaryController extends TimerTask{
         }
     }
     
-
+    public void restartGame() {
+        levelNumber = 0;
+        speler.respawnPlayer(levels.get(levelNumber));
+        completedLevelsTimes.clear();
+        completedLevelsTimes.add("Completed Levels:");
+        milliseconden = 0;
+    }
       
     
     
@@ -218,7 +231,7 @@ public void updateView() {
     levels.get(levelNumber).getBlocks().remove(speler.getToRemoveBlock());
     if (speler.getReachedExit()) {
         speler.resetReachedExit();
-        completedLevelsTimes.add("\nLevel " + levelNumber + ": " + milliseconden/1000);
+        completedLevelsTimes.add("\nLevel " + (levelNumber + 1) + ": " + milliseconden/1000);
         levelNumber++;
         if (levelNumber >= levels.size()) {
         levelNumber = 0;
