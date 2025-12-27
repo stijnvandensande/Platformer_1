@@ -273,7 +273,7 @@ public class Speler extends Square {
     if (prevY >= other.getYCoord() + other.getYSize()) {
         if (type == "glass" && ySpeed < -10) {
             toRemoveBlock = other;
-            ySpeed*=0.60;
+            ySpeed*=0.75;
             return;
         }
         if (type == "jumpPad") {
@@ -295,7 +295,7 @@ public class Speler extends Square {
     if (prevX + xSize <= other.getXCoord()) {
         if (type == "glass" && xSpeed > 10) {
             toRemoveBlock = other;
-            xSpeed*=0.60;
+            xSpeed*=0.50;
             return;
         }
         if (type == "jumpPad") {

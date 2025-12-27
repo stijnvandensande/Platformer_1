@@ -47,7 +47,7 @@ public class Level {
             // Lava
             blocks.add(new BlockLava(300,boardHeight-20,boardWidth-300,20));//botttom spikes
             blocks.add(new BlockLava(boardWidth-20, 0, 20, boardHeight));   //side spikes
-            blocks.add(new BlockLava(300, 220, 20, boardHeight-370));
+            blocks.add(new BlockLava(300, 220, 20, boardHeight-370));       //anti wall jumpl spikes
             
         
             //Glass
@@ -71,12 +71,7 @@ public class Level {
             blocks.add(new BlockPlatform(250, boardHeight-30, 150, 10));    //Low hovering platform bij lava
             blocks.add(new BlockPlatform(100, boardHeight-500, 80, 300));   // linker muur
             
-            
-            
-            
-            
             blocks.add(new BlockGlass(900, 480, 20, 320));
-            
             
             blocks.add(new BlockPlatform(900, boardHeight-300, 80, 300));   // rechter muur onder
             blocks.add(new BlockPlatform(900, 0, 80, 480));                 // rechter muur boven
@@ -86,39 +81,67 @@ public class Level {
             blocks.add(new BlockPlatform(600, boardHeight-520, 100, 20));   //vierde platform
             blocks.add(new BlockPlatform(400, boardHeight-420, 100, 20));   //derde platform
             blocks.add(new BlockPlatform(80, 80, 150, 20));                 //Platform vanboven
-            blocks.add(new BlockPlatform(730, boardHeight-30, 170, 10));   //Catch platform voor te landen na ice desroyed
+            blocks.add(new BlockPlatform(730, boardHeight-30, 170, 10));    //Catch platform voor te landen na ice desroyed
 
-            
-            
-            
-            blocks.add(new BlockPlatform(1050, boardHeight-40, 125, 20));    //Eindplatform
-            blocks.add(new ExitBlock(1085, boardHeight-80, 55, 40));         //Exit
+            blocks.add(new BlockPlatform(1050+500, boardHeight-40, 125, 20));    //Eindplatform
+            blocks.add(new ExitBlock(1085+500, boardHeight-80, 55, 40));         //Exit
 
             blocks.add(new BlockLava(0, boardHeight-20, boardWidth, 20));   //Lalalalava
-            
-            
-            
-            
-            
-
-
-
-            
-
-
-            
-
-            
+                
         }
+
         
         if (levelNumber == 3) {
-            this.respawnCoordX = 200;
-            this.respawnCoordY = 200;
+            this.respawnCoordX = 1050+500;
+            this.respawnCoordY = boardHeight-30;
             
-            blocks.add(new BlockPlatform(400,boardHeight-30,100,10));
-            blocks.add(new ExitBlock(250,boardHeight-50,50,50));
+            blocks.add(new BlockPlatform(1050+500-62, boardHeight-20, 125, 20));//beginplatform
+            
+            blocks.add(new BlockLava(0, boardHeight-10, boardWidth, 10));       //ground lava
+            blocks.add(new BlockLava(boardWidth-20, 0, 20, boardHeight));       //side lava            
+                        
+            blocks.add(new BlockPlatform(250, boardHeight-135, 500, 20));       //Slimeplatform
+            blocks.add(new BlockSlime(250, boardHeight-150, 500, 15));          //SLIME
+            blocks.add(new BlockLava(400, boardHeight-500, 20, 300));       //anti cheese lava            
+            blocks.add(new BlockPlatform(100, boardHeight-500, 80, 300));   // linker muur
+            
+            blocks.add(new ExitBlock(120, boardHeight-600, 60, 40));              //temp test Exit
+            
+            
+            
+            
+            
+            
+            
+            
+            blocks.add(new BlockPlatform(boardWidth-200, 60, 200, 20));         //Exit platform
+            blocks.add(new ExitBlock(boardWidth-120, 20, 60, 40));              //Exit
+            
+            
+            
+        
+   
+        
+        }
+        
+        if (levelNumber == 4){
+            this.respawnCoordX = 10;
+            this.respawnCoordY = boardHeight-120;
+            blocks.add(new ExitBlock(120, boardHeight-40, 60, 40)); 
+        }
+        
+        if (levelNumber == 5){
+            this.respawnCoordX = 10;
+            this.respawnCoordY = boardHeight-120;
+            blocks.add(new ExitBlock(120, boardHeight-40, 60, 40)); 
+        
+        
         }
     }
+    
+    
+    
+    
     
     
     
