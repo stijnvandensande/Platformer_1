@@ -113,11 +113,27 @@ public class Level {
         }
         
         if (levelNumber == 3) {
-            this.respawnCoordX = 200;
-            this.respawnCoordY = 200;
+            this.respawnCoordX = 50;
+            this.respawnCoordY = boardHeight-110;
             
-            blocks.add(new BlockPlatform(400,boardHeight-30,100,10));
-            blocks.add(new ExitBlock(250,boardHeight-50,50,50));
+            blocks.add(new BlockPlatform(0,boardHeight-100,200,100)); //spawnplatform
+            blocks.add(new BlockIce(0,0,100,boardHeight-150)); // ice linkerkant
+            blocks.add(new BlockIce(1000,200,30,boardHeight-200)); // ice midden
+            blocks.add(new BlockLava(200,boardHeight-50,boardWidth-200,50)); // lava onderkant
+            blocks.add(new BlockLava(400,boardHeight-350,20,50)); // lava eerste platform
+            blocks.add(new BlockLava(400,boardHeight-360,40,10)); // lava eerste platform bovenkant
+            blocks.add(new BlockPlatform(420,boardHeight-350,20,50)); // platform eerste platform
+            blocks.add(new BlockLava(700,boardHeight-550,20,50)); // lava tweede platform
+            blocks.add(new BlockPlatform(720,boardHeight-550,20,50)); // lava tweede platform
+            blocks.add(new BlockLava(700,boardHeight-560,40,10)); // lava tweede platform bovenkant
+            blocks.add(new BlockPlatform(280,boardHeight-600,20,50)); // platform derde platform
+            blocks.add(new BlockLava(300,boardHeight-600,20,50)); // lava derde platform
+            blocks.add(new BlockLava(280,boardHeight-610,40,10)); // lava derde platform bovenkant
+            blocks.add(new BlockLava(100,boardHeight-430,400,10)); // lava om route tussen platform 1 en 3 te stoppen
+            blocks.add(new BlockPlatform(520,boardHeight-840,20,50)); // platform vierde platform
+            blocks.add(new BlockLava(500,boardHeight-840,20,50)); // lava vierde platform
+            blocks.add(new BlockLava(500,boardHeight-850,40,10)); // lava vierde platform bovenkant
+            blocks.add(new BlockLava(400,boardHeight-680,600,10)); // lava om route tussen platform 2 en 4 te stoppen
         }
     }
     
