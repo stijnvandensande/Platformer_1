@@ -197,6 +197,7 @@ public void updateView() {
         if (b.getType() == "glass") r.setFill(Color.web("#8aefff"));       //Glass
         if (b.getType() == "jumpPad") r.setFill(Color.web("#af32ed"));       //JumpPad
         if (b.getType() == "slime") r.setFill(Color.web("#65FF00"));       //Slime
+        if (b.getType() == "ice") r.setFill(Color.AQUAMARINE);
         
         
         

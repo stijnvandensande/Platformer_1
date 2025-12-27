@@ -47,7 +47,8 @@ public class Level {
             // Lava
             blocks.add(new BlockLava(300,boardHeight-20,boardWidth-300,20));//botttom spikes
             blocks.add(new BlockLava(boardWidth-20, 0, 20, boardHeight));   //side spikes
-            blocks.add(new BlockLava(300, 220, 20, boardHeight-370));
+            // Ice
+            blocks.add(new BlockIce(300, 220, 20, boardHeight-370));
             
         
             //Glass
