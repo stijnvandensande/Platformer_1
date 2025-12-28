@@ -74,7 +74,7 @@ public class Level {
            
             
             blocks.add(new BlockPlatform(900, boardHeight-300, 80, 300));   // rechter muur onder
-            blocks.add(new BlockGlass(900, 480, 20, 320));                  //glassmuur
+            blocks.add(new BlockGlass(900, 480, 20, 700-480));                  //glassmuur
             blocks.add(new BlockPlatform(900, 0, 80, 480));                 // rechter muur boven
 
             
