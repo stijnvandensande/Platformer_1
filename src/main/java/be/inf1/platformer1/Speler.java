@@ -32,7 +32,7 @@ public class Speler extends Square {
         this.onGround = false;
         this.onLeftWall = false;
         this.onRightWall = false;
-        this.amountOfAirJumps = 1;
+        this.amountOfAirJumps = 5;
         this.hasFriction = true;
         this.reachedExit = false;
         this.deathCount = 0;
@@ -262,7 +262,7 @@ public class Speler extends Square {
         // Breekbaar glas
         if (type == "glass" && ySpeed > 10) {
             toRemoveBlock = other;
-            ySpeed*=0.60;
+            ySpeed*=0.75;
             return;
         }
         
@@ -292,7 +292,7 @@ public class Speler extends Square {
     if (prevY >= other.getYCoord() + other.getYSize()) {
         if (type == "glass" && ySpeed < -10) {
             toRemoveBlock = other;
-            ySpeed*=0.75;
+            ySpeed*=0.50;
             return;
         }
         if (type == "ice") {
