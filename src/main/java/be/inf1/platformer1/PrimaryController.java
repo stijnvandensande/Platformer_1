@@ -117,7 +117,7 @@ public class PrimaryController extends TimerTask{
         levels.add(level3);
         levels.add(level4);
         levels.add(level5);
-        levelNumber = 0;
+        levelNumber = 1;
         completedLevelsTimes = new ArrayList<String>();
         completedLevelsTimes.add("Completed Levels:");
         rootView.setFocusTraversable(true);
@@ -165,9 +165,9 @@ public class PrimaryController extends TimerTask{
     }
     
     public void restartGame() {
-        levelNumber = 0;
+        levelNumber = 1;
         speler.resetDeathCount();
-        speler.respawnPlayer(levels.get(levelNumber));
+        speler.respawnPlayer(levels.get(levelNumber-1));
         completedLevelsTimes.clear();
         completedLevelsTimes.add("Completed Levels:");
         milliseconden = 0;
@@ -190,7 +190,7 @@ public class PrimaryController extends TimerTask{
     
     public void updateView() {
         gamePane.getChildren().clear();
-        levelText.setText("Level " + (levelNumber + 1));
+        levelText.setText("Level " + (levelNumber));
         if(timerStarted){   //start alleen timer als bij keypress
             milliseconden += 1000/60;
         }
@@ -203,7 +203,7 @@ public class PrimaryController extends TimerTask{
         deathCounter.setText("Deaths: " + speler.getDeathCount() + "");
         //check of player leeft
         if(speler.IsDead()){
-            speler.respawnPlayer(levels.get(levelNumber));
+            speler.respawnPlayer(levels.get(levelNumber-1));
             speler.revive();
             speler.resetSpeed();
         }
@@ -241,7 +241,7 @@ public class PrimaryController extends TimerTask{
         
     
         //Level bouwen
-        for (Block b : levels.get(levelNumber).getBlocks()) {
+        for (Block b : levels.get(levelNumber-1).getBlocks()) {
             Rectangle r = new Rectangle(b.getXCoord(), b.getYCoord(), b.getXSize(), b.getYSize());
         
             if (b.getType() == "platform") r.setFill(Color.DARKGRAY);           //Blocks
@@ -291,19 +291,19 @@ public class PrimaryController extends TimerTask{
         }
         spacePressed = false; // important
     }
-    speler.updateCoords(levels.get(levelNumber), speler);
-    levels.get(levelNumber).getBlocks().remove(speler.getToRemoveBlock());
+    speler.updateCoords(levels.get(levelNumber-1), speler);
+    levels.get(levelNumber-1).getBlocks().remove(speler.getToRemoveBlock());
     if (speler.getReachedExit()) {
         speler.resetReachedExit();
-        completedLevelsTimes.add("\nLevel " + (levelNumber + 1) + ": " + milliseconden/1000);
+        completedLevelsTimes.add("\nLevel " + (levelNumber) + ": " + milliseconden/1000);
         levelNumber++;
         
-        if (levelNumber >= levels.size()) {
+        if ((levelNumber) >= (levels.size())) {
             gameCompleted=true;
             timerStarted=false;
             return;
         }
-        speler.respawnPlayer(levels.get(levelNumber));
+        speler.respawnPlayer(levels.get(levelNumber-1));
     }
 
     Platform.runLater(this::updateView);
