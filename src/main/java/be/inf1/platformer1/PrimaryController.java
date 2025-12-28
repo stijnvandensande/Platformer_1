@@ -38,6 +38,8 @@ public class PrimaryController extends TimerTask{
     
     private Label levelTimesText;
     
+    private Label deathCounter;
+    
     private double milliseconden;
     
     private boolean qPressed = false;
@@ -77,11 +79,16 @@ public class PrimaryController extends TimerTask{
         levelTimesTextContent = "";
         levelText = new Label("Level 1");
         timerText = new Label("Time: 0");
+        deathCounter = new Label("0");
         levelTimesText = new Label("Completed levels: ");
         levelTimesText.setLayoutX(20);
-        levelTimesText.setLayoutY(100);
+        levelTimesText.setLayoutY(140);
         levelTimesText.setTextFill(Color.WHITE);
         levelTimesText.setFont(new Font(20));
+        deathCounter.setLayoutX(20);
+        deathCounter.setLayoutY(100);
+        deathCounter.setTextFill(Color.WHITE);
+        deathCounter.setFont(new Font(20));
         levelText.setLayoutX(20);
         levelText.setLayoutY(20);
         levelText.setTextFill(Color.WHITE);
@@ -94,6 +101,7 @@ public class PrimaryController extends TimerTask{
         hudPane.getChildren().add(levelText);
         hudPane.getChildren().add(timerText);
         hudPane.getChildren().add(levelTimesText);
+        hudPane.getChildren().add(deathCounter);
         levels = new ArrayList<Level>();
         level1 = new Level(boardSizeX,boardSizeY,1);
         level2 = new Level(boardSizeX,boardSizeY,2);
@@ -149,6 +157,7 @@ public class PrimaryController extends TimerTask{
     
     public void restartGame() {
         levelNumber = 0;
+        speler.resetDeathCount();
         speler.respawnPlayer(levels.get(levelNumber));
         completedLevelsTimes.clear();
         completedLevelsTimes.add("Completed Levels:");
@@ -172,6 +181,7 @@ public void updateView() {
     }
     levelTimesText.setText(levelTimesTextContent);
     levelTimesTextContent="";
+    deathCounter.setText("Deaths: " + speler.getDeathCount() + "");
     //check of player leeft
     if(speler.IsDead()){
         speler.respawnPlayer(levels.get(levelNumber));

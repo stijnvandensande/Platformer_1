@@ -18,6 +18,7 @@ public class Speler extends Square {
     private double prevX;
     private double prevY;
     private boolean hasFriction;
+    private int deathCount;
     
     
     public Speler(double xCoord, double yCoord, int xSize, int ySize,int maxX, int maxY) {
@@ -34,6 +35,15 @@ public class Speler extends Square {
         this.amountOfAirJumps = 1;
         this.hasFriction = true;
         this.reachedExit = false;
+        this.deathCount = 0;
+    }
+    
+    public int getDeathCount() {
+        return deathCount;
+    }
+    
+    public void resetDeathCount() {
+        deathCount = 0;
     }
     
     public boolean isOnGround() {
@@ -49,6 +59,7 @@ public class Speler extends Square {
     }
     
     public void kill(){ //Kill player
+        deathCount++;
         isDead = true;
     }
     
