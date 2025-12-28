@@ -17,6 +17,8 @@ public class Speler extends Square {
     public Block toRemoveBlock;
     private double prevX;
     private double prevY;
+    private boolean hasFriction;
+    private int deathCount;
     
     
     public Speler(double xCoord, double yCoord, int xSize, int ySize,int maxX, int maxY) {
@@ -31,8 +33,17 @@ public class Speler extends Square {
         this.onLeftWall = false;
         this.onRightWall = false;
         this.amountOfAirJumps = 1;
-        
+        this.hasFriction = true;
         this.reachedExit = false;
+        this.deathCount = 0;
+    }
+    
+    public int getDeathCount() {
+        return deathCount;
+    }
+    
+    public void resetDeathCount() {
+        deathCount = 0;
     }
     
     public boolean isOnGround() {
@@ -48,6 +59,7 @@ public class Speler extends Square {
     }
     
     public void kill(){ //Kill player
+        deathCount++;
         isDead = true;
     }
     
@@ -132,6 +144,7 @@ public class Speler extends Square {
         onLeftWall = false;
         onRightWall = false;
         // vertraging door wrijving
+        if (hasFriction) {
         if (xSpeed > 0) {
             xSpeed -= friction;
         if (xSpeed < 0) {
@@ -143,6 +156,8 @@ public class Speler extends Square {
             xSpeed = 0;
         }
         }
+        }
+        hasFriction = true;
         // check collition vloer
         if (yCoord >= (maxY-this.ySize)) {
             ySpeed = 0;
@@ -251,6 +266,10 @@ public class Speler extends Square {
             return;
         }
         
+        if (type == "ice") {
+            hasFriction = false;
+        }
+        
         if (type == "slime") {
         yCoord = other.getYCoord() - ySize;
         bounce("vertical");
@@ -276,6 +295,9 @@ public class Speler extends Square {
             ySpeed*=0.75;
             return;
         }
+        if (type == "ice") {
+            hasFriction = false;
+        }
         if (type == "jumpPad") {
         yCoord = other.getYCoord() + other.getYSize();
         jumpPadLaunch("down");
@@ -296,6 +318,12 @@ public class Speler extends Square {
         if (type == "glass" && xSpeed > 10) {
             toRemoveBlock = other;
             xSpeed*=0.50;
+            return;
+        }
+        if (type == "ice") {
+            hasFriction = false;
+            xCoord = other.getXCoord() - xSize;
+            xSpeed = 0;
             return;
         }
         if (type == "jumpPad") {
@@ -320,6 +348,12 @@ public class Speler extends Square {
         if (type == "glass" && xSpeed < -10) {
             toRemoveBlock = other;
             xSpeed*=0.60;
+            return;
+        }
+        if (type == "ice") {
+            hasFriction = false;
+            xCoord = other.getXCoord() + other.getXSize();
+            xSpeed = 0;
             return;
         }
         if (type == "jumpPad") {

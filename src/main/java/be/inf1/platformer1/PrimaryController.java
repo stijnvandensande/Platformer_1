@@ -38,13 +38,13 @@ public class PrimaryController extends TimerTask{
     
     private Label levelTimesText;
     
+    private Label deathCounter;
+    
     private double milliseconden;
     
     private boolean qPressed = false;
     private boolean dPressed = false;
     private boolean spacePressed = false;
-    private boolean timerStarted = false;
-    private boolean gameCompleted = false;
     
     private String levelTimesTextContent;
    
@@ -61,8 +61,6 @@ public class PrimaryController extends TimerTask{
     private Level level1;
     private Level level2;
     private Level level3;
-    private Level level4;
-    private Level level5;
     private ArrayList<String> completedLevelsTimes;
     
     public int getBoardSizeX() {
@@ -81,11 +79,16 @@ public class PrimaryController extends TimerTask{
         levelTimesTextContent = "";
         levelText = new Label("Level 1");
         timerText = new Label("Time: 0");
+        deathCounter = new Label("0");
         levelTimesText = new Label("Completed levels: ");
         levelTimesText.setLayoutX(20);
-        levelTimesText.setLayoutY(100);
+        levelTimesText.setLayoutY(140);
         levelTimesText.setTextFill(Color.WHITE);
         levelTimesText.setFont(new Font(20));
+        deathCounter.setLayoutX(20);
+        deathCounter.setLayoutY(100);
+        deathCounter.setTextFill(Color.WHITE);
+        deathCounter.setFont(new Font(20));
         levelText.setLayoutX(20);
         levelText.setLayoutY(20);
         levelText.setTextFill(Color.WHITE);
@@ -98,6 +101,7 @@ public class PrimaryController extends TimerTask{
         hudPane.getChildren().add(levelText);
         hudPane.getChildren().add(timerText);
         hudPane.getChildren().add(levelTimesText);
+        hudPane.getChildren().add(deathCounter);
         levels = new ArrayList<Level>();
         level1 = new Level(boardSizeX,boardSizeY,1);
         level2 = new Level(boardSizeX,boardSizeY,2);
@@ -105,8 +109,6 @@ public class PrimaryController extends TimerTask{
         levels.add(level1);
         levels.add(level2);
         levels.add(level3);
-        levels.add(level4);
-        levels.add(level5);
         levelNumber = 0;
         completedLevelsTimes = new ArrayList<String>();
         completedLevelsTimes.add("Completed Levels:");
@@ -122,7 +124,6 @@ public class PrimaryController extends TimerTask{
 
     @FXML
     void handleKeyPress(KeyEvent e) {
-        startTimer();                       //if key pressed -> begint timer
         switch (e.getCode()) {
             case Q:
                 qPressed = true;
@@ -156,40 +157,31 @@ public class PrimaryController extends TimerTask{
     
     public void restartGame() {
         levelNumber = 0;
+        speler.resetDeathCount();
         speler.respawnPlayer(levels.get(levelNumber));
         completedLevelsTimes.clear();
         completedLevelsTimes.add("Completed Levels:");
         milliseconden = 0;
-        timerStarted= false;
-        gameCompleted=false;
         levels.clear();
         levels.add(new Level(boardSizeX, boardSizeY, 1));
         levels.add(new Level(boardSizeX, boardSizeY, 2));
         levels.add(new Level(boardSizeX, boardSizeY, 3));
-        levels.add(new Level(boardSizeX, boardSizeY, 4));
-        levels.add(new Level(boardSizeX, boardSizeY, 5));
     }
       
-    public void startTimer(){
-        timerStarted=true;
-    }
     
     
-    public void updateView() {
-        gamePane.getChildren().clear();
-        levelText.setText("Level " + (levelNumber + 1));
     
-        if(timerStarted){   //start alleen timer als bij keypress
-            milliseconden += 1000/60;
-        }
-    
-    
+public void updateView() {
+    gamePane.getChildren().clear();
+    levelText.setText("Level " + (levelNumber + 1));
+    milliseconden += 1000/60;
     timerText.setText("Time: " + milliseconden/1000);
     for (String i : completedLevelsTimes) {
         levelTimesTextContent+=i;
     }
     levelTimesText.setText(levelTimesTextContent);
     levelTimesTextContent="";
+    deathCounter.setText("Deaths: " + speler.getDeathCount() + "");
     //check of player leeft
     if(speler.IsDead()){
         speler.respawnPlayer(levels.get(levelNumber));
@@ -202,41 +194,20 @@ public class PrimaryController extends TimerTask{
     backgroundView.setFill(Color.GRAY); //Is iets aangenamer dan ROOD
     gamePane.getChildren().add(backgroundView);
     
-    //Check if level completed en show end screen
-    if (gameCompleted) {
-        Rectangle endBG = new Rectangle(0, 0, boardSizeX, boardSizeY);
-        endBG.setFill(Color.BLACK);
-
-        Label winText = new Label("YOU WIN!");
-        winText.setTextFill(Color.WHITE);
-        winText.setFont(new Font(80));
-        winText.setLayoutX(boardSizeX / 2 - 200);
-        winText.setLayoutY(boardSizeY / 2 - 100);
-
-        Label retryText = new Label("Press R to restart");
-        retryText.setTextFill(Color.GRAY);
-        retryText.setFont(new Font(40));
-        retryText.setLayoutX(boardSizeX / 2 - 200);
-        retryText.setLayoutY(boardSizeY / 2);
-
-        gamePane.getChildren().add(endBG);
-        gamePane.getChildren().add(winText);
-        gamePane.getChildren().add(retryText);
-        return; // Stop view drawing here
-    }
     
     //Level bouwen
     for (Block b : levels.get(levelNumber).getBlocks()) {
         Rectangle r = new Rectangle(b.getXCoord(), b.getYCoord(), b.getXSize(), b.getYSize());
         
-        if (b.getType() == "platform") r.setFill(Color.DARKGRAY);           //Blocks
-        if (b.getType() == "exit") r.setFill(Color.BLACK);                  //Finish
-        if (b.getType() == "lava") r.setFill(Color.web("#fa6400"));         //Lava
-        if (b.getType() == "spikes") r.setFill(Color.RED);                  //Spikes
-        if (b.getType() == "lava") r.setFill(Color.web("#fa6400"));         //Lava
-        if (b.getType() == "glass") r.setFill(Color.web("#8aefff"));        //Glass
-        if (b.getType() == "jumpPad") r.setFill(Color.web("#af32ed"));      //JumpPad
-        if (b.getType() == "slime") r.setFill(Color.web("#65FF00"));        //Slime
+        if (b.getType() == "platform") r.setFill(Color.DARKGRAY);             //Blocks
+        if (b.getType() == "exit") r.setFill(Color.BLACK);                //Finish
+        if (b.getType() == "lava") r.setFill(Color.web("#fa6400"));       //Lava
+        if (b.getType() == "spikes") r.setFill(Color.RED);                 //Spikes
+        if (b.getType() == "lava") r.setFill(Color.web("#fa6400"));       //Lava
+        if (b.getType() == "glass") r.setFill(Color.web("#8aefff"));       //Glass
+        if (b.getType() == "jumpPad") r.setFill(Color.web("#af32ed"));       //JumpPad
+        if (b.getType() == "slime") r.setFill(Color.web("#65FF00"));       //Slime
+        if (b.getType() == "ice") r.setFill(Color.AQUAMARINE);
         
         
         
@@ -278,12 +249,14 @@ public class PrimaryController extends TimerTask{
         completedLevelsTimes.add("\nLevel " + (levelNumber + 1) + ": " + milliseconden/1000);
         levelNumber++;
         if (levelNumber >= levels.size()) {
-            gameCompleted=true;
-            timerStarted=false;            
+        levelNumber = 0;
         }
         speler.respawnPlayer(levels.get(levelNumber));
     }
 
     Platform.runLater(this::updateView);
     }
+
+
+
 }
