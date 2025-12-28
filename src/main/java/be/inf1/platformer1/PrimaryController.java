@@ -164,6 +164,15 @@ public class PrimaryController extends TimerTask{
         }
     }
     
+    public void resetBlocks() {
+        levels.clear();
+        levels.add(new Level(boardSizeX, boardSizeY, 1));
+        levels.add(new Level(boardSizeX, boardSizeY, 2));
+        levels.add(new Level(boardSizeX, boardSizeY, 3));
+        levels.add(new Level(boardSizeX, boardSizeY, 4));
+        levels.add(new Level(boardSizeX, boardSizeY, 5));
+    }
+    
     public void restartGame() {
         levelNumber = 1;
         speler.resetDeathCount();
@@ -190,7 +199,11 @@ public class PrimaryController extends TimerTask{
     
     public void updateView() {
         gamePane.getChildren().clear();
+        if (levelNumber < levels.size()) {
         levelText.setText("Level " + (levelNumber));
+        } else {
+        levelText.setText("The End");
+        }
         if(timerStarted){   //start alleen timer als bij keypress
             milliseconden += 1000/60;
         }
@@ -204,6 +217,7 @@ public class PrimaryController extends TimerTask{
         //check of player leeft
         if(speler.IsDead()){
             speler.respawnPlayer(levels.get(levelNumber-1));
+            resetBlocks();
             speler.revive();
             speler.resetSpeed();
         }
