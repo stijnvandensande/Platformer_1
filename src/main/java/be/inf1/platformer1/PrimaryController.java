@@ -62,7 +62,7 @@ public class PrimaryController extends TimerTask{
     private final int boardSizeX = 1920;
     private final int boardSizeY = 1000;
     private final int jumpStrength = 6;
-    private final double baseSpeed = 0.3;
+    private final double baseSpeed = 1;
     private double speedMultiplier= 1;
     private double movementSpeed = baseSpeed * speedMultiplier;
     private ArrayList<Level> levels;

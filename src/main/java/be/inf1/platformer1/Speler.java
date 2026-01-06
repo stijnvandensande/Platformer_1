@@ -29,7 +29,7 @@ public class Speler extends Square {
         this.xSpeed = 0;
         this.ySpeed = 0;
         this.gravity = 0.15;
-        this.friction = 0.2;
+        this.friction = 0.90;
         this.onGround = false;
         this.onLeftWall = false;
         this.onRightWall = false;
@@ -147,17 +147,7 @@ public class Speler extends Square {
         onRightWall = false;
         // vertraging door wrijving
         if (hasFriction) {
-        if (xSpeed > 0) {
-            xSpeed -= friction;
-        if (xSpeed < 0) {
-            xSpeed = 0;
-        }
-        } else if (xSpeed < 0) {
-        xSpeed += friction;
-        if (xSpeed > 0) {
-            xSpeed = 0;
-        }
-        }
+        xSpeed *= friction;
         }
         hasFriction = true;
         // check collition vloer
@@ -221,10 +211,10 @@ public class Speler extends Square {
     public void wallJump(double jumpSpeed) {
         if (this.onRightWall) {
             ySpeed = -jumpSpeed;
-            xSpeed = -(jumpSpeed/2);
+            xSpeed = -(jumpSpeed);
         } else if (this.onLeftWall) {
             ySpeed = -jumpSpeed;
-            xSpeed = (jumpSpeed/2);
+            xSpeed = (jumpSpeed);
         }
     }
     

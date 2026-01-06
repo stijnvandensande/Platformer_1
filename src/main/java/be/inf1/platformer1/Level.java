@@ -28,7 +28,7 @@ public class Level {
 
     
     private void levelTest(int levelNumber) { // == de Level maker
-        if (levelNumber == 1) {
+        if (levelNumber == 4) {
             this.respawnCoordX = 10;
             this.respawnCoordY = boardHeight-120;
         
@@ -175,7 +175,7 @@ public class Level {
         
         
         
-        if (levelNumber == 4) {
+        if (levelNumber == 1) {
             this.respawnCoordX = 50;
             this.respawnCoordY = boardHeight-110;
             
