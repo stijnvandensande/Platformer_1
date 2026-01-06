@@ -275,19 +275,19 @@ public class PrimaryController extends TimerTask{
         for (Block b : levels.get(levelNumber-1).getBlocks()) {
             Rectangle r = new Rectangle(b.getXCoord(), b.getYCoord(), b.getXSize(), b.getYSize());
         
-            if (b.getType() == "platform") r.setFill(Color.DARKGRAY);           //Blocks
-            if (b.getType() == "exit") r.setFill(Color.BLACK);                  //Finish
-            if (b.getType() == "lava") r.setFill(Color.web("#fa6400"));         //Lava
-            if (b.getType() == "spikes") r.setFill(Color.RED);                  //Spikes
-            if (b.getType() == "lava") r.setFill(Color.web("#fa6400"));         //Lava
-            if (b.getType() == "glass"){                                        //Glass
+            if ("platform".equals(b.getType())) r.setFill(Color.DARKGRAY);           //Blocks
+            if ("exit".equals(b.getType())) r.setFill(Color.BLACK);                  //Finish
+            if ("lava".equals(b.getType())) r.setFill(Color.web("#fa6400"));         //Lava
+            if ("spikes".equals(b.getType())) r.setFill(Color.RED);                  //Spikes
+            if ("lava".equals(b.getType())) r.setFill(Color.web("#fa6400"));         //Lava
+            if ("glass".equals(b.getType())){                                        //Glass
                 r.setFill(Color.web("#8aefff"));
                 r.setOpacity(0.35);
             }       
             
-            if (b.getType() == "jumpPad") r.setFill(Color.web("#af32ed"));      //JumpPad
-            if (b.getType() == "slime") r.setFill(Color.web("#65FF00"));        //Slime
-            if (b.getType() == "ice") r.setFill(Color.web("#89a9d6"));          //Ice
+            if ("jumpPad".equals(b.getType())) r.setFill(Color.web("#af32ed"));      //JumpPad
+            if ("slime".equals(b.getType())) r.setFill(Color.web("#65FF00"));        //Slime
+            if ("ice".equals(b.getType())) r.setFill(Color.web("#89a9d6"));          //Ice
         
         
         
