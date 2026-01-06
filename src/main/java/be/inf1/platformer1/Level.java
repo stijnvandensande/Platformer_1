@@ -130,8 +130,8 @@ public class Level {
         
         }
         
-        
-        if (levelNumber == 4) { //still work in progress
+        /*
+        if (levelNumber == 25) { //still work in progress
 
             this.respawnCoordX = boardWidth-120;
             this.respawnCoordY = 120;
@@ -152,7 +152,7 @@ public class Level {
             
             
             
-            /*
+            
             blocks.add(new BlockLava(100, boardHeight-120, 500, 120));
 
             blocks.add(new BlockLava(420, boardHeight-180, 80, 60));
@@ -165,14 +165,14 @@ public class Level {
 
             blocks.add(new BlockPlatform(200, boardHeight-220, 280, 40));
             blocks.add(new ExitBlock(260, boardHeight-260, 55, 40));
-        */
+        
         }
+        */
         
         
         
         
-        
-        if (levelNumber == 5) {
+        if (levelNumber == 4) {
             this.respawnCoordX = 50;
             this.respawnCoordY = boardHeight-110;
             
@@ -195,6 +195,8 @@ public class Level {
             blocks.add(new BlockLava(450,boardHeight-850,40,10)); // lava vierde platform bovenkant
             blocks.add(new ExitBlock(boardWidth-20,0,20,200)); // exit
         }
+        
+        
     }
     
     

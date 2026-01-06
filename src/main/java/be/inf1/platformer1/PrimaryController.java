@@ -40,6 +40,10 @@ public class PrimaryController extends TimerTask{
     
     private Label deathCounter;
     
+    private Label personalBestText;
+    
+    private double personalBestTime;
+    
     private double milliseconden;
     
     private boolean qPressed = false;
@@ -49,9 +53,12 @@ public class PrimaryController extends TimerTask{
     private boolean gameCompleted = false;
     
     private String levelTimesTextContent;
+    
+    
    
     
     private Speler speler;
+    private final int playerSize = 10;
     private final int boardSizeX = 1920;
     private final int boardSizeY = 1000;
     private final int jumpStrength = 6;
@@ -83,10 +90,11 @@ public class PrimaryController extends TimerTask{
         levelTimesTextContent = "";
         levelText = new Label("Level 1");
         timerText = new Label("Time: 0");
+        personalBestText = new Label("PB: No Time");
         deathCounter = new Label("0");
         levelTimesText = new Label("Completed levels: ");
         levelTimesText.setLayoutX(20);
-        levelTimesText.setLayoutY(140);
+        levelTimesText.setLayoutY(180);
         levelTimesText.setTextFill(Color.WHITE);
         levelTimesText.setFont(new Font(20));
         deathCounter.setLayoutX(20);
@@ -101,11 +109,16 @@ public class PrimaryController extends TimerTask{
         timerText.setLayoutY(60);
         timerText.setTextFill(Color.WHITE);
         timerText.setFont(new Font(20));
+        personalBestText.setLayoutX(20);
+        personalBestText.setLayoutY(140);
+        personalBestText.setTextFill(Color.WHITE);
+        personalBestText.setFont(new Font(20));
 
         hudPane.getChildren().add(levelText);
         hudPane.getChildren().add(timerText);
         hudPane.getChildren().add(levelTimesText);
         hudPane.getChildren().add(deathCounter);
+        hudPane.getChildren().add(personalBestText);
         levels = new ArrayList<Level>();
         level1 = new Level(boardSizeX,boardSizeY,1);
         level2 = new Level(boardSizeX,boardSizeY,2);
@@ -124,7 +137,7 @@ public class PrimaryController extends TimerTask{
         Platform.runLater(() -> rootView.requestFocus());
         rootView.setOnKeyPressed(this::handleKeyPress);
         rootView.setOnKeyReleased(this::handleKeyRelease);
-        speler = new Speler(10,boardSizeY-120,10,10,boardSizeX,boardSizeY);
+        speler = new Speler(level1.getRespawnX(),level1.getRespawnY(),playerSize,playerSize,boardSizeX,boardSizeY);
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(this, 0, 1000/60);
         updateView();
@@ -179,9 +192,9 @@ public class PrimaryController extends TimerTask{
         speler.respawnPlayer(levels.get(levelNumber-1));
         completedLevelsTimes.clear();
         completedLevelsTimes.add("Completed Levels:");
+        gameCompleted=false;
         milliseconden = 0;
         timerStarted= false;
-        gameCompleted=false;
         levels.clear();
         levels.add(new Level(boardSizeX, boardSizeY, 1));
         levels.add(new Level(boardSizeX, boardSizeY, 2));
@@ -247,6 +260,10 @@ public class PrimaryController extends TimerTask{
             gamePane.getChildren().add(endBG);
             gamePane.getChildren().add(winText);
             gamePane.getChildren().add(retryText);
+            if (milliseconden < personalBestTime || personalBestTime == 0) {
+                personalBestTime = milliseconden;
+            }
+            personalBestText.setText("PB: " + personalBestTime/1000);
             return;
         }
         
