@@ -6,8 +6,8 @@ import java.util.ArrayList;
 public class Level {
     
     private ArrayList<Block> blocks;
-    private int boardWidth;
-    private int boardHeight;
+    private final int boardWidth;
+    private final int boardHeight;
     private int respawnCoordX;
     private int respawnCoordY;
 
@@ -50,6 +50,9 @@ public class Level {
             // Ice
             blocks.add(new BlockIce(300, 220, 20, boardHeight-370));
             
+            // food
+            blocks.add(new FoodBlock(500, 500, 30, 30));
+            blocks.add(new FoodBlock(600, 400, 30, 30));
         
             //Glass
             blocks.add(new BlockGlass(100, boardHeight-100, 100, 20));      //brug

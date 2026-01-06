@@ -19,6 +19,7 @@ public class Speler extends Square {
     private double prevY;
     private boolean hasFriction;
     private int deathCount;
+    private boolean foodEaten;
     
     
     public Speler(double xCoord, double yCoord, int xSize, int ySize,int maxX, int maxY) {
@@ -28,7 +29,7 @@ public class Speler extends Square {
         this.xSpeed = 0;
         this.ySpeed = 0;
         this.gravity = 0.15;
-        this.friction = 0.1;
+        this.friction = 0.2;
         this.onGround = false;
         this.onLeftWall = false;
         this.onRightWall = false;
@@ -36,6 +37,7 @@ public class Speler extends Square {
         this.hasFriction = true;
         this.reachedExit = false;
         this.deathCount = 0;
+        this.foodEaten = false;
     }
     
     public int getDeathCount() {
@@ -202,6 +204,13 @@ public class Speler extends Square {
         return this.xSpeed;
     }
     
+    public boolean getFoodEaten() {
+        return foodEaten;
+    }
+    
+    public void resetFoodEaten() {
+        foodEaten = false;
+    }
     
     public void jump(double jumpSpeed) {
         if (this.onGround) {
@@ -253,6 +262,12 @@ public class Speler extends Square {
     // Finish
     if (type == "exit") {
         nextLevel();
+        return;
+    }
+    
+    if (type == "food") {
+        foodEaten = true;
+        toRemoveBlock = other;
         return;
     }
 

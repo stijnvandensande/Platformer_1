@@ -209,6 +209,10 @@ public class PrimaryController extends TimerTask{
         timerStarted=true;
     }
     
+    public void doubleSpeedMultiplier() {
+        speedMultiplier*=2;
+    }
+    
     
     public void updateView() {
         gamePane.getChildren().clear();
@@ -324,6 +328,11 @@ public class PrimaryController extends TimerTask{
     }
     speler.updateCoords(levels.get(levelNumber-1), speler);
     levels.get(levelNumber-1).getBlocks().remove(speler.getToRemoveBlock());
+    if (speler.getFoodEaten()) {
+        doubleSpeedMultiplier();
+        movementSpeed = baseSpeed * speedMultiplier;
+        speler.resetFoodEaten();
+    }
     if (speler.getReachedExit()) {
         speler.resetReachedExit();
         completedLevelsTimes.add("\nLevel " + (levelNumber) + ": " + milliseconden/1000);
