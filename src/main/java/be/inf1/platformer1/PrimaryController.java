@@ -232,6 +232,7 @@ public class PrimaryController extends TimerTask{
         gameCompleted=false;
         milliseconden = 0;
         timerStarted= false;
+        currentSplits.clear();
         levels.clear();
         levels.add(new Level(boardSizeX, boardSizeY, 1));
         levels.add(new Level(boardSizeX, boardSizeY, 2));
