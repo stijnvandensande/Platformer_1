@@ -159,6 +159,23 @@ public class PrimaryController extends TimerTask{
             case R:
                 restartGame();
                 break;
+            case H:
+                //HardcoreMode = true;
+                restartGame();
+                break;
+            case LEFT:
+                if (levelNumber > 1){
+                    levelNumber -= 1;
+                    speler.respawnPlayer(levels.get(levelNumber - 1));
+                }
+                break;
+                
+            case RIGHT:
+                if (levelNumber < levels.size()){
+                    levelNumber += 1;
+                    speler.respawnPlayer(levels.get(levelNumber - 1));
+                }
+                break;
         }
     } 
     
@@ -292,6 +309,8 @@ public class PrimaryController extends TimerTask{
             if ("jumpPad".equals(b.getType())) r.setFill(Color.web("#af32ed"));      //JumpPad
             if ("slime".equals(b.getType())) r.setFill(Color.web("#65FF00"));        //Slime
             if ("ice".equals(b.getType())) r.setFill(Color.web("#89a9d6"));          //Ice
+            if ("food".equals(b.getType())) r.setFill(Color.web("#e6e60b"));          //Ice
+            
         
         
         
