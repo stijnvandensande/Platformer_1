@@ -33,7 +33,7 @@ public class Speler extends Square {
         this.onGround = false;
         this.onLeftWall = false;
         this.onRightWall = false;
-        this.amountOfAirJumps = 1;
+        this.amountOfAirJumps = 10;
         this.hasFriction = true;
         this.reachedExit = false;
         this.deathCount = 0;
