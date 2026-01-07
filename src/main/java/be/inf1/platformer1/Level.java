@@ -117,20 +117,21 @@ public class Level {
             //jump3
             blocks.add(new BlockPlatform(750, boardHeight-135-250, 500, 20));   //Slimeplatform in het midden
             blocks.add(new BlockSlime(750, boardHeight-400, 500, 15));          //SLIME midden groot
+            blocks.add(new BlockLava(990, boardHeight-400-20, 20, 20));         //VIERKANTE Hindernis tussen slimes
             blocks.add(new BlockLava(400, boardHeight-500-315, 20, 315));       //anti cheese lava
             
             blocks.add(new BlockSlime(960, boardHeight-470, 80, 15));           //SLIME klein midden boven
             blocks.add(new BlockLava(990, 0, 20, boardHeight-470));             //anti cheese lava 
             
-            blocks.add(new BlockPlatform(boardWidth-200, 160+150, 180, 20));         //Exit platform
-            blocks.add(new ExitBlock(boardWidth-120, 120+150, 40, 40));              //Exit
+            blocks.add(new BlockPlatform(boardWidth-200, 160+150, 180, 20));    //Exit platform
+            blocks.add(new ExitBlock(boardWidth-120, 120+150, 40, 40));         //Exit
 
 
         
         }
         
-        /*
-        if (levelNumber == 25) { //still work in progress
+        
+        if (levelNumber == 4) { //still work in progress
 
             this.respawnCoordX = boardWidth-120;
             this.respawnCoordY = 120;
@@ -166,12 +167,12 @@ public class Level {
             blocks.add(new ExitBlock(260, boardHeight-260, 55, 40));
         
         }
-        */
         
         
         
         
-        if (levelNumber == 4) {
+        
+        if (levelNumber == 5) {
             this.respawnCoordX = 50;
             this.respawnCoordY = boardHeight-110;
             
@@ -193,14 +194,10 @@ public class Level {
             blocks.add(new BlockLava(450,boardHeight-840,20,50)); // lava vierde platform
             blocks.add(new BlockLava(450,boardHeight-850,40,10)); // lava vierde platform bovenkant
             blocks.add(new ExitBlock(boardWidth-20,0,20,200)); // exit
-        }
-        
-        
-        
-        
+        }     
     }
     
-    
+
 
 
 
@@ -208,7 +205,6 @@ public class Level {
 
     
     public int getRespawnX() {
-        
         return respawnCoordX;
     }
 
