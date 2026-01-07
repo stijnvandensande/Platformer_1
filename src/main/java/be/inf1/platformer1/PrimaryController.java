@@ -34,11 +34,16 @@ public class PrimaryController extends TimerTask{
     
     private Label levelText;
     
+    private ArrayList<Double> currentSplits;
+    private ArrayList<Double> personalBestSplits;
+    
     private Label timerText;
     
     private Label levelTimesText;
     
     private Label deathCounter;
+    
+    private Label authorTimeText;
     
     private Label personalBestText;
     
@@ -87,14 +92,18 @@ public class PrimaryController extends TimerTask{
     
     @FXML
     void initialize() {
+        currentSplits = new ArrayList<>();
+        personalBestSplits = new ArrayList<>();
+
         levelTimesTextContent = "";
         levelText = new Label("Level 1");
         timerText = new Label("Time: 0");
+        authorTimeText = new Label("Time to beat: 33.96");
         personalBestText = new Label("PB: No Time");
         deathCounter = new Label("0");
         levelTimesText = new Label("Completed levels: ");
         levelTimesText.setLayoutX(20);
-        levelTimesText.setLayoutY(180);
+        levelTimesText.setLayoutY(220);
         levelTimesText.setTextFill(Color.WHITE);
         levelTimesText.setFont(new Font(20));
         deathCounter.setLayoutX(20);
@@ -110,15 +119,20 @@ public class PrimaryController extends TimerTask{
         timerText.setTextFill(Color.WHITE);
         timerText.setFont(new Font(20));
         personalBestText.setLayoutX(20);
-        personalBestText.setLayoutY(140);
+        personalBestText.setLayoutY(180);
         personalBestText.setTextFill(Color.WHITE);
         personalBestText.setFont(new Font(20));
+        authorTimeText.setLayoutX(20);
+        authorTimeText.setLayoutY(140);
+        authorTimeText.setTextFill(Color.WHITE);
+        authorTimeText.setFont(new Font(20));
 
         hudPane.getChildren().add(levelText);
         hudPane.getChildren().add(timerText);
         hudPane.getChildren().add(levelTimesText);
         hudPane.getChildren().add(deathCounter);
         hudPane.getChildren().add(personalBestText);
+        hudPane.getChildren().add(authorTimeText);
         levels = new ArrayList<Level>();
         level1 = new Level(boardSizeX,boardSizeY,1);
         level2 = new Level(boardSizeX,boardSizeY,2);
@@ -145,7 +159,9 @@ public class PrimaryController extends TimerTask{
 
     @FXML
     void handleKeyPress(KeyEvent e) {
-        startTimer();     
+        if (!gameCompleted) {
+        startTimer(); 
+        }
         switch (e.getCode()) {
             case Q:
                 qPressed = true;
@@ -154,7 +170,13 @@ public class PrimaryController extends TimerTask{
                 dPressed = true;
                 break;
             case SPACE:
-                spacePressed = true;
+                if (speler.isOnGround()) {
+                    speler.jump(jumpStrength);
+                } else if (speler.isOnWall()) {
+                    speler.wallJump(jumpStrength);
+                } else {
+                    speler.airJump(jumpStrength);
+                }      
                 break;
             case R:
                 restartGame();
@@ -171,9 +193,6 @@ public class PrimaryController extends TimerTask{
             case D:
                 dPressed = false;
                 break;
-            case SPACE:
-                spacePressed = false;
-                break;
         }
     }
     
@@ -188,6 +207,7 @@ public class PrimaryController extends TimerTask{
     
     public void restartGame() {
         levelNumber = 1;
+        speedMultiplier = 1;
         speler.resetDeathCount();
         speler.respawnPlayer(levels.get(levelNumber-1));
         completedLevelsTimes.clear();
@@ -234,6 +254,7 @@ public class PrimaryController extends TimerTask{
         //check of player leeft
         if(speler.IsDead()){
             speler.respawnPlayer(levels.get(levelNumber-1));
+            speedMultiplier = 1;
             resetBlocks();
             speler.revive();
             speler.resetSpeed();
@@ -266,6 +287,8 @@ public class PrimaryController extends TimerTask{
             gamePane.getChildren().add(retryText);
             if (milliseconden < personalBestTime || personalBestTime == 0) {
                 personalBestTime = milliseconden;
+                personalBestSplits = new ArrayList<>(currentSplits);
+                currentSplits.clear();
             }
             personalBestText.setText("PB: " + personalBestTime/1000);
             return;
@@ -308,6 +331,7 @@ public class PrimaryController extends TimerTask{
 
     @Override
     public void run() {
+    movementSpeed = baseSpeed * speedMultiplier;
     if (qPressed) {
         speler.move(-movementSpeed);
     }
@@ -316,26 +340,20 @@ public class PrimaryController extends TimerTask{
         speler.move(movementSpeed);
     }
 
-    if (spacePressed) {
-        if (speler.isOnGround()) {
-            speler.jump(jumpStrength);
-        } else if (speler.isOnWall()) {
-            speler.wallJump(jumpStrength);
-        } else {
-            speler.airJump(jumpStrength);
-        }
-        spacePressed = false; // important
-    }
     speler.updateCoords(levels.get(levelNumber-1), speler);
     levels.get(levelNumber-1).getBlocks().remove(speler.getToRemoveBlock());
     if (speler.getFoodEaten()) {
         doubleSpeedMultiplier();
-        movementSpeed = baseSpeed * speedMultiplier;
         speler.resetFoodEaten();
     }
     if (speler.getReachedExit()) {
         speler.resetReachedExit();
+        speedMultiplier = 1;
+        currentSplits.add(milliseconden);
         completedLevelsTimes.add("\nLevel " + (levelNumber) + ": " + milliseconden/1000);
+        if (!personalBestSplits.isEmpty()) {
+        completedLevelsTimes.add(" " + ((currentSplits.get(levelNumber-1) - personalBestSplits.get(levelNumber-1))/1000));
+        }
         levelNumber++;
         
         if ((levelNumber) >= (levels.size())) {
@@ -348,7 +366,4 @@ public class PrimaryController extends TimerTask{
 
     Platform.runLater(this::updateView);
     }
-
-
-
 }

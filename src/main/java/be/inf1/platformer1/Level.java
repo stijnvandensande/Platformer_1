@@ -28,7 +28,7 @@ public class Level {
 
     
     private void levelTest(int levelNumber) { // == de Level maker
-        if (levelNumber == 4) {
+        if (levelNumber == 1) {
             this.respawnCoordX = 10;
             this.respawnCoordY = boardHeight-120;
         
@@ -50,10 +50,7 @@ public class Level {
             // Ice
             blocks.add(new BlockIce(300, 220, 20, boardHeight-370));
             
-            // food
-            blocks.add(new FoodBlock(500, 500, 30, 30));
-            blocks.add(new FoodBlock(600, 400, 30, 30));
-        
+            
             //Glass
             blocks.add(new BlockGlass(100, boardHeight-100, 100, 20));      //brug
             blocks.add(new BlockGlass(100, boardHeight-170, 100, 20));      //overhang
@@ -79,7 +76,8 @@ public class Level {
             blocks.add(new BlockPlatform(900, boardHeight-300, 80, 300));   // rechter muur onder
             blocks.add(new BlockGlass(900, 480, 20, 700-480));              //glassmuur
             blocks.add(new BlockPlatform(900, 0, 80, 480));                 // rechter muur boven
-
+            
+            blocks.add(new FoodBlock(145, 60, 20, 20));
             
             blocks.add(new BlockPlatform(300, boardHeight-160, 120, 20));   //eerste platform
             blocks.add(new BlockLava(500, boardHeight-260, 120, 20));       //Tweede platform
@@ -100,7 +98,6 @@ public class Level {
             this.respawnCoordY = boardHeight-30;
             
             blocks.add(new BlockPlatform(1050+500-62, boardHeight-20, 125, 20));//beginplatform
-            blocks.add(new BlockPlatform(1050+500-62-20, boardHeight-30, 20, 20));//stopper voor mocht je nog q aan het indrukken zijn zodat je niet onmiddelijk dood gaat.... ja is ook een skill issue
             
             blocks.add(new BlockLava(0, boardHeight-10, boardWidth, 10));       //ground lava
             blocks.add(new BlockLava(boardWidth-20, 0, 20, boardHeight));       //side lava            
@@ -123,8 +120,7 @@ public class Level {
             blocks.add(new BlockLava(400, boardHeight-500-315, 20, 315));       //anti cheese lava
             
             blocks.add(new BlockSlime(960, boardHeight-470, 80, 15));           //SLIME klein midden boven
-            blocks.add(new BlockLava(990, 0, 20, boardHeight-470));             //anti cheese lava
-            blocks.add(new BlockLava(990, boardHeight-400-20, 20, 20));         //VIERKANTE Hindernis tussen slimes
+            blocks.add(new BlockLava(990, 0, 20, boardHeight-470));             //anti cheese lava 
             
             blocks.add(new BlockPlatform(boardWidth-200, 160+150, 180, 20));         //Exit platform
             blocks.add(new ExitBlock(boardWidth-120, 120+150, 40, 40));              //Exit
@@ -175,7 +171,7 @@ public class Level {
         
         
         
-        if (levelNumber == 1) {
+        if (levelNumber == 4) {
             this.respawnCoordX = 50;
             this.respawnCoordY = boardHeight-110;
             
@@ -198,6 +194,8 @@ public class Level {
             blocks.add(new BlockLava(450,boardHeight-850,40,10)); // lava vierde platform bovenkant
             blocks.add(new ExitBlock(boardWidth-20,0,20,200)); // exit
         }
+        
+        
         
         
     }
