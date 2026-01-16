@@ -98,7 +98,7 @@ public class PrimaryController extends TimerTask{
         levelTimesTextContent = "";
         levelText = new Label("Level 1");
         timerText = new Label("Time: 0");
-        authorTimeText = new Label("Time to beat: 33.96");
+        authorTimeText = new Label("Author Medal: 56.112");
         personalBestText = new Label("PB: No Time");
         deathCounter = new Label("0");
         levelTimesText = new Label("Completed levels: ");
@@ -255,9 +255,10 @@ public class PrimaryController extends TimerTask{
     public void updateView() {
         gamePane.getChildren().clear();
         if (levelNumber < levels.size()) {
-        levelText.setText("Level " + (levelNumber));
-        } else {
-        levelText.setText("The End");
+            levelText.setText("Level " + (levelNumber));
+        }
+        else {
+            levelText.setText("The End");
         }
         if(timerStarted){   //start alleen timer als bij keypress
             milliseconden += 1000/60;
@@ -351,6 +352,10 @@ public class PrimaryController extends TimerTask{
 
     @Override
     public void run() {
+    if (gameCompleted){//Dit is de crash fix van level 5 omdat: Index 5 out of bounds for length 5 omdat Platform.runLater(this::updateView) niet correct afgerond word
+        Platform.runLater(this::updateView);
+        return;
+    }
     movementSpeed = baseSpeed * speedMultiplier;
     if (qPressed) {
         speler.move(-movementSpeed);
@@ -376,7 +381,7 @@ public class PrimaryController extends TimerTask{
         }
         levelNumber++;
         
-        if ((levelNumber) >= (levels.size())) {
+        if ((levelNumber) > (levels.size())) { //Moet( > ) zijn en niet ( >= )
             gameCompleted=true;
             timerStarted=false;
             return;
